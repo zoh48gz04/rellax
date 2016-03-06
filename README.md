@@ -31,7 +31,7 @@ In the spirit of lightweight javascript, the build processes (thus far) is light
 
 1. Open demo.html
 2. Make code changes and refresh browser
-3. Once feature is finished or bug fixed, use (jshint)[http://jshint.com/] to lint code
-4. Fix lint issues then use (Google Closure Compiler)[https://closure-compiler.appspot.com/home] to minify
+3. Once feature is finished or bug fixed, use [jshint](http://jshint.com/) to lint code
+4. Fix lint issues then use [Google Closure Compiler](https://closure-compiler.appspot.com/home) to minify
 5. 🍻
 
