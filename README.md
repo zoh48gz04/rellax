@@ -5,7 +5,7 @@ Rellax is a buttery smooth, super lightweight (750bytes gzipped), vanilla javasc
 * [Demo Website](https://dixonandmoe.com/rellax/)
 
 ## Getting Started
-Download and insert `rellax.min.js`:
+`npm install rellax` or if you're old school like us download and insert `rellax.min.js`
 
 ```html
 <div class="rellax">
