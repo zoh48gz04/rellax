@@ -20,8 +20,9 @@ Have any suggestions or feedback? Reach out [@dixonandmoe](https://twitter.com/d
   I’m extra slow and smooth
 </div>
 
-<script src=rellax.min.js></script>
+<script src="rellax.min.js"></script>
 <script>
+  var DEBUG = false;
   // Accepts any class name
   var rellax = new Rellax('.rellax');
 </script>
