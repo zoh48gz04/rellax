@@ -1,6 +1,6 @@
 
 // ------------------------------------------
-// Rellax.js - v0.1
+// Rellax.js - v0.1.1
 // Buttery smooth parallax library
 // Copyright (c) 2016 Moe Amaya (@moeamaya)
 // MIT license
@@ -9,6 +9,8 @@
 // for parallax concepts 
 // ------------------------------------------
 
+
+var DEBUG = false;
 
 var Rellax = function(el, options){
   "use strict";
@@ -75,6 +77,9 @@ var Rellax = function(el, options){
       blocks.push(block);
     }
 
+    // ***************************************
+    // TODO: 
+    // Refactor with requestAnimationFrame
     window.addEventListener('scroll',function(){
       animate();
       if (DEBUG) { debounce(); }
