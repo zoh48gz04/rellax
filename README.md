@@ -4,8 +4,10 @@ Rellax is a buttery smooth, super lightweight (750bytes gzipped), vanilla javasc
 
 * [Demo Website](https://dixonandmoe.com/rellax/)
 
+Have any suggestions or feedback? Reach out [@dixonandmoe](https://twitter.com/dixonandmoe)
+
 ## Getting Started
-Download and insert `rellax.min.js`:
+`npm install rellax` or if you're old school like us download and insert `rellax.min.js`
 
 ```html
 <div class="rellax">
@@ -18,8 +20,9 @@ Download and insert `rellax.min.js`:
   I’m extra slow and smooth
 </div>
 
-<script src=rellax.min.js></script>
+<script src="rellax.min.js"></script>
 <script>
+  var DEBUG = false;
   // Accepts any class name
   var rellax = new Rellax('.rellax');
 </script>
