@@ -23,8 +23,7 @@
         root.Rellax = factory();
   }
 }(this, function () {
-
-  return function Rellax(el, options){
+  var Rellax = function(el, options){ 
     "use strict";
 
     var self = Object.create(Rellax.prototype);
@@ -201,4 +200,5 @@
     Object.freeze();
     return self;
   };
+  return Rellax;
 }));
