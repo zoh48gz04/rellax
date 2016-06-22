@@ -11,7 +11,7 @@ Have any suggestions or feedback? Reach out [@dixonandmoe](https://twitter.com/d
 
 ```html
 <div class="rellax">
-  I’m that defaualt chill speed of "-2"
+  I’m that default chill speed of "-2"
 </div>
 <div class="rellax" data-rellax-speed="7">
   I’m super fast!!
@@ -22,7 +22,6 @@ Have any suggestions or feedback? Reach out [@dixonandmoe](https://twitter.com/d
 
 <script src="rellax.min.js"></script>
 <script>
-  var DEBUG = false;
   // Accepts any class name
   var rellax = new Rellax('.rellax');
 </script>
