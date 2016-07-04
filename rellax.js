@@ -31,7 +31,7 @@
     // Rellax stays lightweight by limiting usage to desktops/laptops
     if (typeof window.orientation !== 'undefined') { return; }
 
-    var posY = 0;
+    var posY = -1; // set it to -1 so the animate function gets called at least once
     var screenY = 0;
     var blocks = [];
     
@@ -151,12 +151,23 @@
 
     // set scroll position (posY)
     // side effect method is not ideal, but okay for now
+    // returns true if the scroll changed, false if nothing happened
     var setPosition = function() {
+    	var oldY = posY;
+    	
       if (window.pageYOffset !== undefined) {
         posY = window.pageYOffset;
       } else {
         posY = (document.documentElement || document.body.parentNode || document.body).scrollTop;
       }
+      
+      if (oldY != posY) {
+      	// scroll changed, return true
+      	return true;
+      }
+      
+      // scroll did not change
+      return false;
     };
 
 
@@ -180,17 +191,19 @@
 
     // Transform3d on parallax element
     var animate = function() {
-    	setPosition();
-
-      for (var i = 0; i < self.elems.length; i++){
-        var percentage = ((posY - blocks[i].top + screenY) / (blocks[i].height + screenY));
-
-        // Subtracting initialize value, so element stays in same spot as HTML
-        var position = updatePosition(percentage, blocks[i].speed) - blocks[i].base;
-
-        // Move that element
-        var translate = 'translate3d(0,' + position + 'px' + ',0)' + blocks[i].style;
-        self.elems[i].style.cssText = '-webkit-transform:'+translate+';-moz-transform:'+translate+';transform:'+translate+';';
+    	if (setPosition()) {
+				// setPosition() returns true if the scroll position changed
+				// if it changed, then we loop through the elements
+				for (var i = 0; i < self.elems.length; i++){
+	        var percentage = ((posY - blocks[i].top + screenY) / (blocks[i].height + screenY));
+	
+	        // Subtracting initialize value, so element stays in same spot as HTML
+	        var position = updatePosition(percentage, blocks[i].speed) - blocks[i].base;
+	
+	        // Move that element
+	        var translate = 'translate3d(0,' + position + 'px' + ',0)' + blocks[i].style;
+	        self.elems[i].style.cssText = '-webkit-transform:'+translate+';-moz-transform:'+translate+';transform:'+translate+';';
+	      }
       }
       
       if (!ScrollTriggerLoop) {
