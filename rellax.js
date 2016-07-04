@@ -34,6 +34,16 @@
     var posY = 0;
     var screenY = 0;
     var blocks = [];
+    
+    // check what requestAnimationFrame to use, and if
+    // it's not supported, use the onscroll event
+    var loop = window.requestAnimationFrame ||
+    	window.webkitRequestAnimationFrame ||
+    	window.mozRequestAnimationFrame ||
+    	window.msRequestAnimationFrame ||
+    	window.oRequestAnimationFrame ||
+    	_this.scrollElement.onscroll;
+    var ScrollTriggerLoop = false;
 
     // Default Settings
     self.options = {
@@ -87,19 +97,22 @@
         var block = createBlock(self.elems[i]);
         blocks.push(block);
       }
-
-      // ***************************************
-      // TODO: 
-      // Refactor with requestAnimationFrame
-      window.addEventListener('scroll',function(){
-        animate();
-        if (self.options.debug) { debounce(); }
-        else { animate(); }
-      });
-      window.addEventListener('resize',function(){
-        animate();
-      });
-
+			
+			// If ScrollTrigger is found, we use that
+			// to attach to the requestAnimationFrame loop
+			if (typeof ScrollTrigger !== 'undefined') {
+				ScrollTriggerLoop = true;
+				
+				ScrollTrigger.attach(animate);
+				
+				// Resize is not called by ScrollTrigger
+				window.addEventListener('resize', function(){
+				  animate();
+				});
+			}
+			
+			// If ScrollTrigger is not found, our own loop
+			// will start by calling animate just once
       animate();
     };
 
@@ -167,7 +180,7 @@
 
     // Transform3d on parallax element
     var animate = function() {
-      setPosition();
+    	setPosition();
 
       for (var i = 0; i < self.elems.length; i++){
         var percentage = ((posY - blocks[i].top + screenY) / (blocks[i].height + screenY));
@@ -178,6 +191,12 @@
         // Move that element
         var translate = 'translate3d(0,' + position + 'px' + ',0)' + blocks[i].style;
         self.elems[i].style.cssText = '-webkit-transform:'+translate+';-moz-transform:'+translate+';transform:'+translate+';';
+      }
+      
+      if (!ScrollTriggerLoop) {
+      	// ScrollTrigger is not handling the loop,
+      	// so loop again
+      	loop(animate);
       }
     };
 
