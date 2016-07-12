@@ -42,11 +42,11 @@
     	window.mozRequestAnimationFrame ||
     	window.msRequestAnimationFrame ||
     	window.oRequestAnimationFrame ||
-    	_this.scrollElement.onscroll;
+    	function(callback){ setTimeout(callback, 1000 / 60); };
 
     // Default Settings
     self.options = {
-      speed: -4
+      speed: -2
     };
 
     // User defined options (might have more in the future)
@@ -172,15 +172,7 @@
     };
 
 
-    // Not using. Debating it's value for this script
-    // check if element is in viewport (ignores transform3d tho)
-    var visible = function(i) {
-      if ( (posY + screenY) > self.elems[i].offsetTop && (posY) < self.elems[i].offsetTop + self.elems[i].offsetHeight ) {
-        return true;
-      }
-      return false;
-    };
-
+    //
 		var update = function() {
 			if (setPosition()) {
 				animate();
@@ -201,20 +193,6 @@
         // Move that element
         var translate = 'translate3d(0,' + position + 'px' + ',0)' + blocks[i].style;
         self.elems[i].style.cssText = '-webkit-transform:'+translate+';-moz-transform:'+translate+';transform:'+translate+';';
-      }
-    };
-
-
-    // ------------------------------------
-    //  For Testing
-    // ------------------------------------
-    var debounceValue = 0;
-    var debounce = function() {
-      if (debounceValue < 10) {
-        debounceValue++;
-      } else {
-        animate();
-        debounceValue = 0;
       }
     };
 
