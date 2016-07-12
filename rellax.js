@@ -31,9 +31,18 @@
     // Rellax stays lightweight by limiting usage to desktops/laptops
     if (typeof window.orientation !== 'undefined') { return; }
 
-    var posY = 0;
+    var posY = 0; // set it to -1 so the animate function gets called at least once
     var screenY = 0;
     var blocks = [];
+    
+    // check what requestAnimationFrame to use, and if
+    // it's not supported, use the onscroll event
+    var loop = window.requestAnimationFrame ||
+    	window.webkitRequestAnimationFrame ||
+    	window.mozRequestAnimationFrame ||
+    	window.msRequestAnimationFrame ||
+    	window.oRequestAnimationFrame ||
+    	_this.scrollElement.onscroll;
 
     // Default Settings
     self.options = {
@@ -87,19 +96,16 @@
         var block = createBlock(self.elems[i]);
         blocks.push(block);
       }
-
-      // ***************************************
-      // TODO: 
-      // Refactor with requestAnimationFrame
-      window.addEventListener('scroll',function(){
-        animate();
-        if (self.options.debug) { debounce(); }
-        else { animate(); }
-      });
-      window.addEventListener('resize',function(){
-        animate();
-      });
-
+			
+			window.addEventListener('resize', function(){
+			  animate();
+			});
+			
+			// Start the loop
+      update();
+      
+      // The loop does nothing if the scrollPosition did not change
+      // so call animate to make sure every element has their transforms
       animate();
     };
 
@@ -138,12 +144,23 @@
 
     // set scroll position (posY)
     // side effect method is not ideal, but okay for now
+    // returns true if the scroll changed, false if nothing happened
     var setPosition = function() {
+    	var oldY = posY;
+    	
       if (window.pageYOffset !== undefined) {
         posY = window.pageYOffset;
       } else {
         posY = (document.documentElement || document.body.parentNode || document.body).scrollTop;
       }
+      
+      if (oldY != posY) {
+      	// scroll changed, return true
+      	return true;
+      }
+      
+      // scroll did not change
+      return false;
     };
 
 
@@ -164,12 +181,18 @@
       return false;
     };
 
-
+		var update = function() {
+			if (setPosition()) {
+				animate();
+	    }
+	    
+	    // loop again
+	    loop(update);
+		};
+		
     // Transform3d on parallax element
     var animate = function() {
-      setPosition();
-
-      for (var i = 0; i < self.elems.length; i++){
+    	for (var i = 0; i < self.elems.length; i++){
         var percentage = ((posY - blocks[i].top + screenY) / (blocks[i].height + screenY));
 
         // Subtracting initialize value, so element stays in same spot as HTML
