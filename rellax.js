@@ -1,6 +1,6 @@
 
 // ------------------------------------------
-// Rellax.js - v0.2
+// Rellax.js - v0.1.0
 // Buttery smooth parallax library
 // Copyright (c) 2016 Moe Amaya (@moeamaya)
 // MIT license
