@@ -126,7 +126,7 @@
       var percentage = (posY - blockTop + screenY) / (blockHeight + screenY);
 
       // Optional individual block speed as data attr, otherwise global speed
-      var speed = el.dataset.rellaxSpeed ? el.dataset.rellaxSpeed : self.options.speed;
+      var speed = el.getAttribute('data-rellaxSpeed') ? el.getAttribute('data-rellaxSpeed') : self.options.speed;
       var base = updatePosition(percentage, speed);
 
       // Store non-translate3d transforms
