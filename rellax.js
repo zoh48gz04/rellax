@@ -116,8 +116,14 @@
     var createBlock = function(el) {
 
       // initializing at scrollY = 0 (top of browser)
-      // ensures elements are positioned based on HTML layout
+      // ensures elements are positioned based on HTML layout.
+      //
+      // If the element has the percentage attribute, the posY needs to be
+      // the current scroll position's value, so that the elements are still positioned based on HTML layout
       var posY = 0;
+      if(el.getAttribute('data-rellax-percentage')){
+        posY = document.body.scrollTop;
+      }
 
       var blockTop = posY + el.getBoundingClientRect().top;
       var blockHeight = el.clientHeight || el.offsetHeight || el.scrollHeight;
