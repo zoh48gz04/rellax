@@ -133,11 +133,13 @@
 
       // Optional individual block speed as data attr, otherwise global speed
       // Check if has percentage attr, and limit speed to 5, else limit it to 10
+      var speed;
       if (el.getAttribute('data-rellax-percentage')) {
-        var speed = el.getAttribute('data-rellax-speed') ? limitSpeed(el.getAttribute('data-rellax-speed'), 5) : limitSpeed(self.options.speed, 5);
+        speed = el.getAttribute('data-rellax-speed') ? limitSpeed(el.getAttribute('data-rellax-speed'), 5) : limitSpeed(self.options.speed, 5);
       } else {
-        var speed = el.getAttribute('data-rellax-speed') ? limitSpeed(el.getAttribute('data-rellax-speed'), 10) : self.options.speed;
+        speed = el.getAttribute('data-rellax-speed') ? limitSpeed(el.getAttribute('data-rellax-speed'), 10) : self.options.speed;
       }
+
       var base = updatePosition(percentage, speed);
 
       // Store non-translate3d transforms
@@ -162,7 +164,7 @@
       } else {
         return current;
       }
-    }
+    };
 
     // set scroll position (posY)
     // side effect method is not ideal, but okay for now
