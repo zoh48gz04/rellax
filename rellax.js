@@ -136,7 +136,7 @@
       var base = updatePosition(percentage, speed);
 
       // Store non-translate3d transforms
-      var cssTransform = el.style.cssText.slice(11);
+      var cssTransform = el.style.cssText;
 
       return {
         base: base,
@@ -197,7 +197,7 @@
         var position = updatePosition(percentage, blocks[i].speed) - blocks[i].base;
 
         // Move that element
-        var translate = 'translate3d(0,' + position + 'px' + ',0)' + blocks[i].style;
+        var translate = 'translate3d(0,' + position + 'px' + ',0);' + blocks[i].style;
         self.elems[i].style.cssText = '-webkit-transform:'+translate+';-moz-transform:'+translate+';transform:'+translate+';';
       }
     };
