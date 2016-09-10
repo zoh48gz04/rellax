@@ -142,15 +142,23 @@
 
       var base = updatePosition(percentage, speed);
 
-      // Store non-translate3d transforms
-      var cssTransform = el.style.cssText;
+      // ~~Store non-translate3d transforms~~
+      // Store inline styles and extract transforms
+      var style = el.style.cssText,
+          cssTransform = '';
+      for (var i = style.split(';').length - 1; i >= 0; i--) {
+        if(style.split(';')[i].indexOf('transform') >= 0){
+          cssTransform = style.split(';')[i].slice(11);
+        }
+      }
 
       return {
         base: base,
         top: blockTop,
         height: blockHeight,
         speed: speed,
-        style: cssTransform
+        style: style,
+        styleTransform: cssTransform
       };
     };
 
@@ -215,8 +223,9 @@
         var position = updatePosition(percentage, blocks[i].speed) - blocks[i].base;
 
         // Move that element
-        var translate = 'translate3d(0,' + position + 'px' + ',0);' + blocks[i].style;
-        self.elems[i].style.cssText = '-webkit-transform:'+translate+';-moz-transform:'+translate+';transform:'+translate+';';
+        // (Prepare the new transform and append initial inline transforms. Set the new, and preppend previous inline styles)
+        var translate = ' translate3d(0,' + position + 'px' + ',0) ' + blocks[i].styleTransform;
+        self.elems[i].style.cssText = blocks[i].style+'-webkit-transform:'+translate+';-moz-transform:'+translate+';transform:'+translate+';';
       }
     };
 
