@@ -46,7 +46,8 @@
 
     // Default Settings
     self.options = {
-      speed: -2
+      speed: -2,
+      center: false
     };
 
     // User defined options (might have more in the future)
@@ -130,14 +131,13 @@
 
       // apparently parallax equation everyone uses
       var percentage = el.getAttribute('data-rellax-percentage') ? el.getAttribute('data-rellax-percentage') : (posY - blockTop + screenY) / (blockHeight + screenY);
+      if(self.options.center){ percentage = 0.5; }
 
       // Optional individual block speed as data attr, otherwise global speed
       // Check if has percentage attr, and limit speed to 5, else limit it to 10
-      var speed;
-      if (el.getAttribute('data-rellax-percentage')) {
+      var speed = el.getAttribute('data-rellax-speed') ? limitSpeed(el.getAttribute('data-rellax-speed'), 10) : self.options.speed;
+      if (el.getAttribute('data-rellax-percentage') || self.options.center) {
         speed = el.getAttribute('data-rellax-speed') ? limitSpeed(el.getAttribute('data-rellax-speed'), 5) : limitSpeed(self.options.speed, 5);
-      } else {
-        speed = el.getAttribute('data-rellax-speed') ? limitSpeed(el.getAttribute('data-rellax-speed'), 10) : self.options.speed;
       }
 
       var base = updatePosition(percentage, speed);
