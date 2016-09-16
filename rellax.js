@@ -121,10 +121,7 @@
       //
       // If the element has the percentage attribute, the posY needs to be
       // the current scroll position's value, so that the elements are still positioned based on HTML layout
-      var posY = 0;
-      if(el.getAttribute('data-rellax-percentage')){
-        posY = document.body.scrollTop;
-      }
+      var posY = el.getAttribute('data-rellax-percentage') || self.options.center ? document.body.scrollTop : 0;
 
       var blockTop = posY + el.getBoundingClientRect().top;
       var blockHeight = el.clientHeight || el.offsetHeight || el.scrollHeight;
@@ -147,7 +144,7 @@
       var style = el.style.cssText,
           cssTransform = '';
       for (var i = style.split(';').length - 1; i >= 0; i--) {
-        if(style.split(';')[i].indexOf('transform') >= 0){
+        if(style.split(';')[i].indexOf('transform') >= 0 && style.split(';')[i].slice(11) == 'transform'){
           cssTransform = style.split(';')[i].slice(11);
         }
       }
