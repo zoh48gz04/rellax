@@ -26,7 +26,12 @@ Have any suggestions or feedback? Reach out [@dixonandmoe](https://twitter.com/d
   var rellax = new Rellax('.rellax');
 </script>
 ```
-
+```html
+<script>
+  // Also can pass in optional settings block
+  var rellax = new Rellax('.rellax', {speed: -4})
+</script>
+```
 
 ## Development
 In the spirit of lightweight javascript, the build processes (thus far) is lightweight also.
