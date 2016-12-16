@@ -1,6 +1,6 @@
 
 // ------------------------------------------
-// Rellax.js - v0.1.2
+// Rellax.js - v0.1.3
 // Buttery smooth parallax library
 // Copyright (c) 2016 Moe Amaya (@moeamaya)
 // MIT license
@@ -195,7 +195,6 @@
 
 
     init();
-    Object.freeze();
     return self;
   };
   return Rellax;
