@@ -1,6 +1,6 @@
 
 // ------------------------------------------
-// Rellax.js - v0.1.0
+// Rellax.js - v0.1.2
 // Buttery smooth parallax library
 // Copyright (c) 2016 Moe Amaya (@moeamaya)
 // MIT license
@@ -27,9 +27,6 @@
     "use strict";
 
     var self = Object.create(Rellax.prototype);
-
-    // Rellax stays lightweight by limiting usage to desktops/laptops
-    if (typeof window.orientation !== 'undefined') { return; }
 
     var posY = 0; // set it to -1 so the animate function gets called at least once
     var screenY = 0;
