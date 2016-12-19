@@ -89,7 +89,7 @@ header h3 {
 
 
 .grid {
-  position: fixed; 
+  position: fixed;
   width: 100%;
 }
 .grid-line {
@@ -101,7 +101,7 @@ header h3 {
 
 
 .fixed-top {
-  position: absolute;  
+  position: absolute;
   width: 600px;
   height: 600px;
   background: #00F1C9;
@@ -118,7 +118,7 @@ header h3 {
 
 main,
 .main {
-  
+  overflow: hidden;
 }
 
 .section {
@@ -283,6 +283,13 @@ code {
 .share a {
   font-size: 34px;
 }
+.share a span {
+  transition: all 400ms cubic-bezier(0.68, -0.1, 0.265, 1.55);
+}
+.share a:hover span {
+  margin-left: 10px;
+}
+
 a.dam,
 a.dam:hover,
 a.dam:active,
@@ -395,7 +402,7 @@ span.white {
 ------------------------------------*/
 
 @media (max-width: 767px) {
- 
+
 
 }
 
