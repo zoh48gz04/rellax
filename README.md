@@ -1,6 +1,6 @@
 # RELLAX
 
-Rellax is a buttery smooth, super lightweight (871bytes gzipped), vanilla javascript parallax library. Rellax limits the parallax feature to laptop/desktop screens since the effect is negligible on smaller screens.
+Rellax is a buttery smooth, super lightweight (1021bytes gzipped), vanilla javascript parallax library. **Update:** Rellax now works on mobile (v1.0.0). 
 
 * [Demo Website](https://dixonandmoe.com/rellax/)
 
@@ -29,7 +29,42 @@ Have any suggestions or feedback? Reach out [@dixonandmoe](https://twitter.com/d
 ```html
 <script>
   // Also can pass in optional settings block
-  var rellax = new Rellax('.rellax', {speed: -4})
+  var rellax = new Rellax('.rellax');
+</script>
+```
+## Features
+
+### Centering
+After some fantastic work from [@p-realinho](https://github.com/p-realinho), we just released the ability to center parallax elements in your viewport! We'll be building a nice demo website, but for now check out the tests folder for several examples of how it works.
+
+There's two ways to implement centering, either on specific elements or as a global option.
+```html
+<div class="rellax" data-rellax-percentage="0.5">
+  I’m that default chill speed of "-2" and "centered"
+</div>
+<div class="rellax" data-rellax-speed="7" data-rellax-percentage="0.5">
+  I’m super fast!! And super centered!!
+</div>
+<div class="rellax" data-rellax-speed="-4" data-rellax-percentage="0.5">
+  I’m extra slow and smooth, and hella centered.
+</div>
+```
+```html
+<script>
+  // Center all the things!
+  var rellax = new Rellax('.rellax', {
+    center: true
+  });
+</script>
+```
+### Destroy
+```html
+<script>
+  // Start Rellax
+  var rellax = new Rellax('.rellax');
+  
+  // End Rellax and reset parallax elements to their original positions
+  rellax.destroy();
 </script>
 ```
 
