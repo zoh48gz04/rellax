@@ -1,6 +1,6 @@
 # RELLAX
 
-Rellax is a buttery smooth, super lightweight (871bytes gzipped), vanilla javascript parallax library. Rellax limits the parallax feature to laptop/desktop screens since the effect is negligible on smaller screens.
+Rellax is a buttery smooth, super lightweight (1021bytes gzipped), vanilla javascript parallax library. Rellax limits the parallax feature to laptop/desktop screens since the effect is negligible on smaller screens.
 
 * [Demo Website](https://dixonandmoe.com/rellax/)
 
@@ -51,6 +51,7 @@ There's two ways to implement centering, either on specific elements or as a glo
 ```
 ```html
 <script>
+  // Center all the things!
   var rellax = new Rellax('.rellax', {
     center: true
   });
