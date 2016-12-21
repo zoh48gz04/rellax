@@ -1,6 +1,6 @@
 
 // ------------------------------------------
-// Rellax.js - v0.1.3
+// Rellax.js - v1.0.0
 // Buttery smooth parallax library
 // Copyright (c) 2016 Moe Amaya (@moeamaya)
 // MIT license
@@ -31,6 +31,7 @@
     var posY = 0; // set it to -1 so the animate function gets called at least once
     var screenY = 0;
     var blocks = [];
+    var pause = false;
 
     // check what requestAnimationFrame to use, and if
     // it's not supported, use the onscroll event
@@ -212,7 +213,7 @@
 
     //
 		var update = function() {
-			if (setPosition()) {
+			if (setPosition() && pause === false) {
 				animate();
 	    }
 
@@ -233,6 +234,14 @@
         var translate = ' translate3d(0,' + position + 'px' + ',0)' + blocks[i].transform;
         self.elems[i].style.cssText = blocks[i].style+'-webkit-transform:'+translate+';-moz-transform:'+translate+';transform:'+translate+';';
       }
+    };
+
+
+    self.destroy = function() {
+      for (var i = 0; i < self.elems.length; i++){
+        self.elems[i].style.cssText = blocks[i].style;
+      }
+      pause = true;
     };
 
 
