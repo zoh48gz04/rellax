@@ -33,6 +33,8 @@ Have any suggestions or feedback? Reach out [@dixonandmoe](https://twitter.com/d
 </script>
 ```
 ## Features
+
+### Centering
 After some fantastic work from [@p-realinho](https://github.com/p-realinho), we just released the ability to center parallax elements in your viewport! We'll be building a nice demo website, but for now check out the tests folder for several examples of how it works.
 
 There's two ways to implement centering, either on specific elements or as a global option.
@@ -52,6 +54,16 @@ There's two ways to implement centering, either on specific elements or as a glo
   var rellax = new Rellax('.rellax', {
     center: true
   });
+</script>
+```
+### Destroy
+```html
+<script>
+  // Start Rellax
+  var rellax = new Rellax('.rellax');
+  
+  // End Rellax and reset parallax elements to their original positions
+  rellax.destroy();
 </script>
 ```
 
