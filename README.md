@@ -67,6 +67,9 @@ There's two ways to implement centering, either on specific elements or as a glo
   rellax.destroy();
 </script>
 ```
+## In the Wild
+If you're using Rellax in production, we'd love to list you here! Let us know: moe@dixonandmoe.com
+- [Loren Ipsum Generator](https://loremipsumgenerator.com/)
 
 ## Development
 In the spirit of lightweight javascript, the build processes (thus far) is lightweight also.
