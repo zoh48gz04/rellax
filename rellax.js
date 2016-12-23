@@ -10,17 +10,17 @@
 // ------------------------------------------
 
 (function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define([], factory);
-    } else if (typeof module === 'object' && module.exports) {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
-        module.exports = factory();
-    } else {
-        // Browser globals (root is window)
-        root.Rellax = factory();
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define([], factory);
+  } else if (typeof module === 'object' && module.exports) {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory();
+  } else {
+    // Browser globals (root is window)
+    root.Rellax = factory();
   }
 }(this, function () {
   var Rellax = function(el, options){
@@ -36,11 +36,11 @@
     // check what requestAnimationFrame to use, and if
     // it's not supported, use the onscroll event
     var loop = window.requestAnimationFrame ||
-    	window.webkitRequestAnimationFrame ||
-    	window.mozRequestAnimationFrame ||
-    	window.msRequestAnimationFrame ||
-    	window.oRequestAnimationFrame ||
-    	function(callback){ setTimeout(callback, 1000 / 60); };
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.msRequestAnimationFrame ||
+      window.oRequestAnimationFrame ||
+      function(callback){ setTimeout(callback, 1000 / 60); };
 
     // Default Settings
     self.options = {
@@ -96,11 +96,11 @@
         blocks.push(block);
       }
 
-			window.addEventListener('resize', function(){
-			  animate();
-			});
+      window.addEventListener('resize', function(){
+        animate();
+      });
 
-			// Start the loop
+      // Start the loop
       update();
 
       // The loop does nothing if the scrollPosition did not change
@@ -185,7 +185,7 @@
     // side effect method is not ideal, but okay for now
     // returns true if the scroll changed, false if nothing happened
     var setPosition = function() {
-    	var oldY = posY;
+      var oldY = posY;
 
       if (window.pageYOffset !== undefined) {
         posY = window.pageYOffset;
@@ -194,8 +194,8 @@
       }
 
       if (oldY != posY) {
-      	// scroll changed, return true
-      	return true;
+        // scroll changed, return true
+        return true;
       }
 
       // scroll did not change
@@ -212,18 +212,18 @@
 
 
     //
-		var update = function() {
-			if (setPosition() && pause === false) {
-				animate();
-	    }
+    var update = function() {
+      if (setPosition() && pause === false) {
+        animate();
+      }
 
-	    // loop again
-	    loop(update);
-		};
+      // loop again
+      loop(update);
+    };
 
     // Transform3d on parallax element
     var animate = function() {
-    	for (var i = 0; i < self.elems.length; i++){
+      for (var i = 0; i < self.elems.length; i++){
         var percentage = ((posY - blocks[i].top + screenY) / (blocks[i].height + screenY));
 
         // Subtracting initialize value, so element stays in same spot as HTML
