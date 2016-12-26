@@ -45,7 +45,8 @@
     // Default Settings
     self.options = {
       speed: -2,
-      center: false
+      center: false,
+      wrapper: null
     };
 
     // User defined options (might have more in the future)
@@ -82,6 +83,28 @@
       throw new Error("The elements you're trying to select don't exist.");
     }
 
+    // Has wrapper and it exists
+    if (self.options.wrapper) {
+      if (!self.options.wrapper.nodeType) {
+        var wrapper = document.querySelector(self.options.wrapper);
+
+        if (wrapper) {
+          self.options.wrapper = wrapper;
+        } else {
+          throw new Error("The wrapper you're trying to use don't exist.");
+        }
+      }
+    }
+
+
+    // Get and cache initial position of all elements
+    var cacheBlocks = function() {
+      for (var i = 0; i < self.elems.length; i++){
+        var block = createBlock(self.elems[i]);
+        blocks.push(block);
+      }
+    };
+
 
     // Let's kick this script off
     // Build array for cached element values
@@ -90,11 +113,7 @@
       screenY = window.innerHeight;
       setPosition();
 
-      // Get and cache initial position of all elements
-      for (var i = 0; i < self.elems.length; i++){
-        var block = createBlock(self.elems[i]);
-        blocks.push(block);
-      }
+      cacheBlocks();
 
       window.addEventListener('resize', function(){
         animate();
@@ -119,7 +138,8 @@
       //
       // If the element has the percentage attribute, the posY needs to be
       // the current scroll position's value, so that the elements are still positioned based on HTML layout
-      var posY = el.getAttribute('data-rellax-percentage') || self.options.center ? document.body.scrollTop : 0;
+      var wrapper = self.options.wrapper ? self.options.wrapper : document.body;
+      var posY = el.getAttribute('data-rellax-percentage') || self.options.center ? wrapper.scrollTop : 0;
 
       var blockTop = posY + el.getBoundingClientRect().top;
       var blockHeight = el.clientHeight || el.offsetHeight || el.scrollHeight;
@@ -187,11 +207,16 @@
     var setPosition = function() {
       var oldY = posY;
 
-      if (window.pageYOffset !== undefined) {
-        posY = window.pageYOffset;
+      if (self.options.wrapper) {
+        posY = self.options.wrapper.scrollTop;
       } else {
-        posY = (document.documentElement || document.body.parentNode || document.body).scrollTop;
+        if (window.pageYOffset !== undefined) {
+          posY = window.pageYOffset;
+        } else {
+          posY = (document.documentElement || document.body.parentNode || document.body).scrollTop;
+        }
       }
+
 
       if (oldY != posY) {
         // scroll changed, return true
@@ -234,6 +259,16 @@
         var translate = ' translate3d(0,' + position + 'px' + ',0)' + blocks[i].transform;
         self.elems[i].style.cssText = blocks[i].style+'-webkit-transform:'+translate+';-moz-transform:'+translate+';transform:'+translate+';';
       }
+    };
+
+
+    self.refresh = function() {
+      self.destroy();
+      screenY = window.innerHeight;
+      blocks = [];
+      cacheBlocks();
+      animate();
+      pause = false;
     };
 
 
