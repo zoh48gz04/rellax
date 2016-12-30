@@ -113,26 +113,28 @@
     // values: base, top, height, speed
     // el: is dom object, return: el cache values
     var createBlock = function(el) {
+      var dataPercenage = el.getAttribute('data-rellax-percentage');
+      var dataSpeed = el.getAttribute('data-rellax-speed');
 
       // initializing at scrollY = 0 (top of browser)
       // ensures elements are positioned based on HTML layout.
       //
       // If the element has the percentage attribute, the posY needs to be
       // the current scroll position's value, so that the elements are still positioned based on HTML layout
-      var posY = el.getAttribute('data-rellax-percentage') || self.options.center ? document.body.scrollTop : 0;
+      var posY = dataPercenage || self.options.center ? document.body.scrollTop : 0;
 
       var blockTop = posY + el.getBoundingClientRect().top;
       var blockHeight = el.clientHeight || el.offsetHeight || el.scrollHeight;
 
       // apparently parallax equation everyone uses
-      var percentage = el.getAttribute('data-rellax-percentage') ? el.getAttribute('data-rellax-percentage') : (posY - blockTop + screenY) / (blockHeight + screenY);
+      var percentage = dataPercenage ? dataPercenage : (posY - blockTop + screenY) / (blockHeight + screenY);
       if(self.options.center){ percentage = 0.5; }
 
       // Optional individual block speed as data attr, otherwise global speed
       // Check if has percentage attr, and limit speed to 5, else limit it to 10
-      var speed = el.getAttribute('data-rellax-speed') ? limitSpeed(el.getAttribute('data-rellax-speed'), 10) : self.options.speed;
-      if (el.getAttribute('data-rellax-percentage') || self.options.center) {
-        speed = el.getAttribute('data-rellax-speed') ? limitSpeed(el.getAttribute('data-rellax-speed'), 5) : limitSpeed(self.options.speed, 5);
+      var speed = dataSpeed ? limitSpeed(dataSpeed, 10) : self.options.speed;
+      if (dataPercenage || self.options.center) {
+        speed = dataSpeed ? limitSpeed(dataSpeed, 5) : limitSpeed(self.options.speed, 5);
       }
 
       var base = updatePosition(percentage, speed);
