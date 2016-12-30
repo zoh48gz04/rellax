@@ -114,7 +114,7 @@
     // values: base, top, height, speed
     // el: is dom object, return: el cache values
     var createBlock = function(el) {
-      var dataPercenage = el.getAttribute('data-rellax-percentage');
+      var dataPercentage = el.getAttribute('data-rellax-percentage');
       var dataSpeed = el.getAttribute('data-rellax-speed');
 
       // initializing at scrollY = 0 (top of browser)
@@ -122,19 +122,19 @@
       //
       // If the element has the percentage attribute, the posY needs to be
       // the current scroll position's value, so that the elements are still positioned based on HTML layout
-      var posY = dataPercenage || self.options.center ? document.body.scrollTop : 0;
+      var posY = dataPercentage || self.options.center ? document.body.scrollTop : 0;
 
       var blockTop = posY + el.getBoundingClientRect().top;
       var blockHeight = el.clientHeight || el.offsetHeight || el.scrollHeight;
 
       // apparently parallax equation everyone uses
-      var percentage = dataPercenage ? dataPercenage : (posY - blockTop + screenY) / (blockHeight + screenY);
+      var percentage = dataPercentage ? dataPercentage : (posY - blockTop + screenY) / (blockHeight + screenY);
       if(self.options.center){ percentage = 0.5; }
 
       // Optional individual block speed as data attr, otherwise global speed
       // Check if has percentage attr, and limit speed to 5, else limit it to 10
       var speed = dataSpeed ? clamp(dataSpeed, -10, 10) : self.options.speed;
-      if (dataPercenage || self.options.center) {
+      if (dataPercentage || self.options.center) {
         speed = clamp(dataSpeed || self.options.speed, -5, 5);
       }
 
