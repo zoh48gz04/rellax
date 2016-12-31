@@ -42,6 +42,11 @@
       window.oRequestAnimationFrame ||
       function(callback){ setTimeout(callback, 1000 / 60); };
 
+    // limit the given number in the range [min, max]
+    var clamp = function(num, min, max) {
+      return (num <= min) ? min : ((num >= max) ? max : num);
+    };
+
     // Default Settings
     self.options = {
       speed: -2,
@@ -56,11 +61,7 @@
     }
 
     // If some clown tries to crank speed, limit them to +-10
-    if (self.options.speed < -10) {
-      self.options.speed = -10;
-    } else if (self.options.speed > 10) {
-      self.options.speed = 10;
-    }
+    self.options.speed = clamp(self.options.speed, -10, 10);
 
     // By default, rellax class
     if (!el) {
@@ -113,26 +114,28 @@
     // values: base, top, height, speed
     // el: is dom object, return: el cache values
     var createBlock = function(el) {
+      var dataPercentage = el.getAttribute('data-rellax-percentage');
+      var dataSpeed = el.getAttribute('data-rellax-speed');
 
       // initializing at scrollY = 0 (top of browser)
       // ensures elements are positioned based on HTML layout.
       //
       // If the element has the percentage attribute, the posY needs to be
       // the current scroll position's value, so that the elements are still positioned based on HTML layout
-      var posY = el.getAttribute('data-rellax-percentage') || self.options.center ? document.body.scrollTop : 0;
+      var posY = dataPercentage || self.options.center ? document.body.scrollTop : 0;
 
       var blockTop = posY + el.getBoundingClientRect().top;
       var blockHeight = el.clientHeight || el.offsetHeight || el.scrollHeight;
 
       // apparently parallax equation everyone uses
-      var percentage = el.getAttribute('data-rellax-percentage') ? el.getAttribute('data-rellax-percentage') : (posY - blockTop + screenY) / (blockHeight + screenY);
+      var percentage = dataPercentage ? dataPercentage : (posY - blockTop + screenY) / (blockHeight + screenY);
       if(self.options.center){ percentage = 0.5; }
 
       // Optional individual block speed as data attr, otherwise global speed
       // Check if has percentage attr, and limit speed to 5, else limit it to 10
-      var speed = el.getAttribute('data-rellax-speed') ? limitSpeed(el.getAttribute('data-rellax-speed'), 10) : self.options.speed;
-      if (el.getAttribute('data-rellax-percentage') || self.options.center) {
-        speed = el.getAttribute('data-rellax-speed') ? limitSpeed(el.getAttribute('data-rellax-speed'), 5) : limitSpeed(self.options.speed, 5);
+      var speed = dataSpeed ? clamp(dataSpeed, -10, 10) : self.options.speed;
+      if (dataPercentage || self.options.center) {
+        speed = clamp(dataSpeed || self.options.speed, -5, 5);
       }
 
       var base = updatePosition(percentage, speed);
@@ -167,18 +170,6 @@
         style: style,
         transform: transform
       };
-    };
-
-    // Check if current speed is < or > than max/-max
-    // If so, return max
-    var limitSpeed = function(current, max) {
-      if (current < -max) {
-        return -max;
-      } else if (current > max) {
-        return max;
-      } else {
-        return current;
-      }
     };
 
     // set scroll position (posY)
