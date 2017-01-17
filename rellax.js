@@ -42,6 +42,20 @@
       window.oRequestAnimationFrame ||
       function(callback){ setTimeout(callback, 1000 / 60); };
 
+    // check which transform property to use
+    var transformProp = window.transformProp || (function(){
+      var testEl = document.createElement('div');
+      if (testEl.style.transform == null) {
+        var vendors = ['Webkit', 'Moz', 'ms'];
+        for (var vendor in vendors) {
+          if (testEl.style[ vendors[vendor] + 'Transform' ] !== undefined) {
+            return vendors[vendor] + 'Transform';
+          }
+        }
+      }
+      return 'transform';
+    })();
+
     // limit the given number in the range [min, max]
     var clamp = function(num, min, max) {
       return (num <= min) ? min : ((num >= max) ? max : num);
@@ -221,9 +235,9 @@
         var position = updatePosition(percentage, blocks[i].speed) - blocks[i].base;
 
         // Move that element
-        // (Prepare the new transform and append initial inline transforms. Set the new, and preppend previous inline styles)
-        var translate = ' translate3d(0,' + position + 'px' + ',0)' + blocks[i].transform;
-        self.elems[i].style.cssText = blocks[i].style+'-webkit-transform:'+translate+';-moz-transform:'+translate+';transform:'+translate+';';
+        // (Set the new translation and append initial inline transforms.)
+        var translate = 'translate3d(0,' + position + 'px,0) ' + blocks[i].transform;
+        self.elems[i].style[transformProp] = translate;
       }
     };
 
