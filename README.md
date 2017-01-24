@@ -69,6 +69,7 @@ There's two ways to implement centering, either on specific elements or as a glo
 ```
 ## In the Wild
 If you're using Rellax in production, we'd love to list you here! Let us know: moe@dixonandmoe.com
+- [Airgora](https://www.airgora.com/competition)
 - [Lorem Ipsum Generator](https://loremipsumgenerator.com/)
 - [Alex Bailon Portfolio](http://www.iambailon.com/)
 
