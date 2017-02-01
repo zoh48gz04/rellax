@@ -68,14 +68,11 @@
       el = '.rellax';
     }
 
-    // Classes
-    if (document.getElementsByClassName(el.replace('.',''))){
-      self.elems = document.getElementsByClassName(el.replace('.',''));
-    }
+    var elements = document.querySelectorAll(el);
 
     // Now query selector
-    else if (document.querySelector(el) !== false) {
-      self.elems = document.querySelector(el);
+    if (elements.length > 0) {
+      self.elems = elements;
     }
 
     // The elements don't exist
