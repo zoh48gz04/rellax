@@ -64,7 +64,8 @@
     // Default Settings
     self.options = {
       speed: -2,
-      center: false
+      center: false,
+      round: true,
     };
 
     // User defined options (might have more in the future)
@@ -210,9 +211,10 @@
 
     // Ahh a pure function, gets new transform value
     // based on scrollPostion and speed
+    // Allow for decimal pixel values
     var updatePosition = function(percentage, speed) {
       var value = (speed * (100 * (1 - percentage)));
-      return Math.round(value);
+      return self.options.round ? Math.round(value) : value;
     };
 
 
