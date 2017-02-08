@@ -83,14 +83,11 @@
       el = '.rellax';
     }
 
-    // Classes
-    if (document.getElementsByClassName(el.replace('.',''))){
-      self.elems = document.getElementsByClassName(el.replace('.',''));
-    }
+    var elements = document.querySelectorAll(el);
 
     // Now query selector
-    else if (document.querySelector(el) !== false) {
-      self.elems = document.querySelector(el);
+    if (elements.length > 0) {
+      self.elems = elements;
     }
 
     // The elements don't exist
@@ -137,7 +134,7 @@
       //
       // If the element has the percentage attribute, the posY needs to be
       // the current scroll position's value, so that the elements are still positioned based on HTML layout
-      var posY = dataPercentage || self.options.center ? document.body.scrollTop : 0;
+      var posY = dataPercentage || self.options.center ? (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop) : 0;
 
       var blockTop = posY + el.getBoundingClientRect().top;
       var blockHeight = el.clientHeight || el.offsetHeight || el.scrollHeight;
