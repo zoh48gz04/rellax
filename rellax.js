@@ -42,6 +42,20 @@
       window.oRequestAnimationFrame ||
       function(callback){ setTimeout(callback, 1000 / 60); };
 
+    // check which transform property to use
+    var transformProp = window.transformProp || (function(){
+      var testEl = document.createElement('div');
+      if (testEl.style.transform == null) {
+        var vendors = ['Webkit', 'Moz', 'ms'];
+        for (var vendor in vendors) {
+          if (testEl.style[ vendors[vendor] + 'Transform' ] !== undefined) {
+            return vendors[vendor] + 'Transform';
+          }
+        }
+      }
+      return 'transform';
+    })();
+
     // limit the given number in the range [min, max]
     var clamp = function(num, min, max) {
       return (num <= min) ? min : ((num >= max) ? max : num);
@@ -50,7 +64,8 @@
     // Default Settings
     self.options = {
       speed: -2,
-      center: false
+      center: false,
+      round: true,
     };
 
     // User defined options (might have more in the future)
@@ -114,8 +129,8 @@
     // values: base, top, height, speed
     // el: is dom object, return: el cache values
     var createBlock = function(el) {
-      var dataPercentage = el.getAttribute('data-rellax-percentage');
-      var dataSpeed = el.getAttribute('data-rellax-speed');
+      var dataPercentage = el.dataset.rellaxPercentage;
+      var dataSpeed = el.dataset.rellaxSpeed;
 
       // initializing at scrollY = 0 (top of browser)
       // ensures elements are positioned based on HTML layout.
@@ -196,9 +211,10 @@
 
     // Ahh a pure function, gets new transform value
     // based on scrollPostion and speed
+    // Allow for decimal pixel values
     var updatePosition = function(percentage, speed) {
       var value = (speed * (100 * (1 - percentage)));
-      return Math.round(value);
+      return self.options.round ? Math.round(value) : value;
     };
 
 
@@ -221,9 +237,9 @@
         var position = updatePosition(percentage, blocks[i].speed) - blocks[i].base;
 
         // Move that element
-        // (Prepare the new transform and append initial inline transforms. Set the new, and preppend previous inline styles)
-        var translate = ' translate3d(0,' + position + 'px' + ',0)' + blocks[i].transform;
-        self.elems[i].style.cssText = blocks[i].style+'-webkit-transform:'+translate+';-moz-transform:'+translate+';transform:'+translate+';';
+        // (Set the new translation and append initial inline transforms.)
+        var translate = 'translate3d(0,' + position + 'px,0) ' + blocks[i].transform;
+        self.elems[i].style[transformProp] = translate;
       }
     };
 
