@@ -10,17 +10,17 @@
 // ------------------------------------------
 
 (function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define([], factory);
-    } else if (typeof module === 'object' && module.exports) {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
-        module.exports = factory();
-    } else {
-        // Browser globals (root is window)
-        root.Rellax = factory();
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define([], factory);
+  } else if (typeof module === 'object' && module.exports) {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory();
+  } else {
+    // Browser globals (root is window)
+    root.Rellax = factory();
   }
 }(this, function () {
   var Rellax = function(el, options){
@@ -36,16 +36,36 @@
     // check what requestAnimationFrame to use, and if
     // it's not supported, use the onscroll event
     var loop = window.requestAnimationFrame ||
-    	window.webkitRequestAnimationFrame ||
-    	window.mozRequestAnimationFrame ||
-    	window.msRequestAnimationFrame ||
-    	window.oRequestAnimationFrame ||
-    	function(callback){ setTimeout(callback, 1000 / 60); };
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.msRequestAnimationFrame ||
+      window.oRequestAnimationFrame ||
+      function(callback){ setTimeout(callback, 1000 / 60); };
+
+    // check which transform property to use
+    var transformProp = window.transformProp || (function(){
+      var testEl = document.createElement('div');
+      if (testEl.style.transform == null) {
+        var vendors = ['Webkit', 'Moz', 'ms'];
+        for (var vendor in vendors) {
+          if (testEl.style[ vendors[vendor] + 'Transform' ] !== undefined) {
+            return vendors[vendor] + 'Transform';
+          }
+        }
+      }
+      return 'transform';
+    })();
+
+    // limit the given number in the range [min, max]
+    var clamp = function(num, min, max) {
+      return (num <= min) ? min : ((num >= max) ? max : num);
+    };
 
     // Default Settings
     self.options = {
       speed: -2,
-      center: false
+      center: false,
+      round: true,
     };
 
     // User defined options (might have more in the future)
@@ -56,25 +76,18 @@
     }
 
     // If some clown tries to crank speed, limit them to +-10
-    if (self.options.speed < -10) {
-      self.options.speed = -10;
-    } else if (self.options.speed > 10) {
-      self.options.speed = 10;
-    }
+    self.options.speed = clamp(self.options.speed, -10, 10);
 
     // By default, rellax class
     if (!el) {
       el = '.rellax';
     }
 
-    // Classes
-    if (document.getElementsByClassName(el.replace('.',''))){
-      self.elems = document.getElementsByClassName(el.replace('.',''));
-    }
+    var elements = document.querySelectorAll(el);
 
     // Now query selector
-    else if (document.querySelector(el) !== false) {
-      self.elems = querySelector(el);
+    if (elements.length > 0) {
+      self.elems = elements;
     }
 
     // The elements don't exist
@@ -96,11 +109,11 @@
         blocks.push(block);
       }
 
-			window.addEventListener('resize', function(){
-			  animate();
-			});
+      window.addEventListener('resize', function(){
+        animate();
+      });
 
-			// Start the loop
+      // Start the loop
       update();
 
       // The loop does nothing if the scrollPosition did not change
@@ -113,26 +126,28 @@
     // values: base, top, height, speed
     // el: is dom object, return: el cache values
     var createBlock = function(el) {
+      var dataPercentage = el.dataset.rellaxPercentage;
+      var dataSpeed = el.dataset.rellaxSpeed;
 
       // initializing at scrollY = 0 (top of browser)
       // ensures elements are positioned based on HTML layout.
       //
       // If the element has the percentage attribute, the posY needs to be
       // the current scroll position's value, so that the elements are still positioned based on HTML layout
-      var posY = el.getAttribute('data-rellax-percentage') || self.options.center ? document.body.scrollTop : 0;
+      var posY = dataPercentage || self.options.center ? (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop) : 0;
 
       var blockTop = posY + el.getBoundingClientRect().top;
       var blockHeight = el.clientHeight || el.offsetHeight || el.scrollHeight;
 
       // apparently parallax equation everyone uses
-      var percentage = el.getAttribute('data-rellax-percentage') ? el.getAttribute('data-rellax-percentage') : (posY - blockTop + screenY) / (blockHeight + screenY);
+      var percentage = dataPercentage ? dataPercentage : (posY - blockTop + screenY) / (blockHeight + screenY);
       if(self.options.center){ percentage = 0.5; }
 
       // Optional individual block speed as data attr, otherwise global speed
       // Check if has percentage attr, and limit speed to 5, else limit it to 10
-      var speed = el.getAttribute('data-rellax-speed') ? limitSpeed(el.getAttribute('data-rellax-speed'), 10) : self.options.speed;
-      if (el.getAttribute('data-rellax-percentage') || self.options.center) {
-        speed = el.getAttribute('data-rellax-speed') ? limitSpeed(el.getAttribute('data-rellax-speed'), 5) : limitSpeed(self.options.speed, 5);
+      var speed = dataSpeed ? clamp(dataSpeed, -10, 10) : self.options.speed;
+      if (dataPercentage || self.options.center) {
+        speed = clamp(dataSpeed || self.options.speed, -5, 5);
       }
 
       var base = updatePosition(percentage, speed);
@@ -169,23 +184,11 @@
       };
     };
 
-    // Check if current speed is < or > than max/-max
-    // If so, return max
-    var limitSpeed = function(current, max) {
-      if (current < -max) {
-        return -max;
-      } else if (current > max) {
-        return max;
-      } else {
-        return current;
-      }
-    };
-
     // set scroll position (posY)
     // side effect method is not ideal, but okay for now
     // returns true if the scroll changed, false if nothing happened
     var setPosition = function() {
-    	var oldY = posY;
+      var oldY = posY;
 
       if (window.pageYOffset !== undefined) {
         posY = window.pageYOffset;
@@ -194,8 +197,8 @@
       }
 
       if (oldY != posY) {
-      	// scroll changed, return true
-      	return true;
+        // scroll changed, return true
+        return true;
       }
 
       // scroll did not change
@@ -205,34 +208,35 @@
 
     // Ahh a pure function, gets new transform value
     // based on scrollPostion and speed
+    // Allow for decimal pixel values
     var updatePosition = function(percentage, speed) {
       var value = (speed * (100 * (1 - percentage)));
-      return Math.round(value);
+      return self.options.round ? Math.round(value) : value;
     };
 
 
     //
-		var update = function() {
-			if (setPosition() && pause === false) {
-				animate();
-	    }
+    var update = function() {
+      if (setPosition() && pause === false) {
+        animate();
+      }
 
-	    // loop again
-	    loop(update);
-		};
+      // loop again
+      loop(update);
+    };
 
     // Transform3d on parallax element
     var animate = function() {
-    	for (var i = 0; i < self.elems.length; i++){
+      for (var i = 0; i < self.elems.length; i++){
         var percentage = ((posY - blocks[i].top + screenY) / (blocks[i].height + screenY));
 
         // Subtracting initialize value, so element stays in same spot as HTML
         var position = updatePosition(percentage, blocks[i].speed) - blocks[i].base;
 
         // Move that element
-        // (Prepare the new transform and append initial inline transforms. Set the new, and preppend previous inline styles)
-        var translate = ' translate3d(0,' + position + 'px' + ',0)' + blocks[i].transform;
-        self.elems[i].style.cssText = blocks[i].style+'-webkit-transform:'+translate+';-moz-transform:'+translate+';transform:'+translate+';';
+        // (Set the new translation and append initial inline transforms.)
+        var translate = 'translate3d(0,' + position + 'px,0) ' + blocks[i].transform;
+        self.elems[i].style[transformProp] = translate;
       }
     };
 
