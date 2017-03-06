@@ -76,6 +76,7 @@ If you're using Rellax in production, we'd love to list you here! Let us know: m
 - [Airgora](https://www.airgora.com/competition)
 - [Lorem Ipsum Generator](https://loremipsumgenerator.com/)
 - [Alex Bailon Portfolio](http://www.iambailon.com/)
+- [Terry Design](http://terrydesign.co.uk/)
 
 ## Development
 In the spirit of lightweight javascript, the build processes (thus far) is lightweight also.
