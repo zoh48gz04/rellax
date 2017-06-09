@@ -6,10 +6,6 @@ Rellax is a buttery smooth, super lightweight (1021bytes gzipped), vanilla javas
 
 Have any suggestions or feedback? Reach out [@dixonandmoe](https://twitter.com/dixonandmoe)
 
-—
-
-🎉 Hiring Designers: Are you using Rellax on a project? Does having a 🍺/☕️/🍵, playing Soundcloud remixes, and experimenting with new design and code ideas get you all giddy? Yea, us too 😜. We're hiring a Junior Frontend Designer in San Francisco (sorry no remote). Let's chat robert@dixonandmoe.com.
-
 ## Getting Started
 `npm install rellax --save` or if you're old school like us download and insert `rellax.min.js`
 
