@@ -69,9 +69,13 @@ There's two ways to implement centering, either on specific elements or as a glo
 ```
 ## In the Wild
 If you're using Rellax in production, we'd love to list you here! Let us know: moe@dixonandmoe.com
+- [Smallchat](https://small.chat/)
 - [Airgora](https://www.airgora.com/competition)
 - [Lorem Ipsum Generator](https://loremipsumgenerator.com/)
 - [Alex Bailon Portfolio](http://www.iambailon.com/)
+- [Terry Design](http://terrydesign.co.uk/)
+
+Learn Rellax and other web animation skills with a course on [CSS Animation Rocks](http://courses.cssanimation.rocks/p/level-up)
 
 ## Development
 In the spirit of lightweight javascript, the build processes (thus far) is lightweight also.
