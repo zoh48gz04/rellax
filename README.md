@@ -30,8 +30,8 @@ Have any suggestions or feedback? Reach out [@dixonandmoe](https://twitter.com/d
 <script>
   // Also can pass in optional settings block
   var rellax = new Rellax('.rellax', {
-    speed: -1,
-    center: true,
+    speed: -2,
+    center: false,
     round: true,
   });
 </script>
