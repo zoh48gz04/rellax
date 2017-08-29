@@ -29,7 +29,11 @@ Have any suggestions or feedback? Reach out [@dixonandmoe](https://twitter.com/d
 ```html
 <script>
   // Also can pass in optional settings block
-  var rellax = new Rellax('.rellax');
+  var rellax = new Rellax('.rellax', {
+    speed: -1,
+    center: true,
+    round: true,
+  });
 </script>
 ```
 ## Features
