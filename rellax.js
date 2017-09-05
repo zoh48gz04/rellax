@@ -126,8 +126,8 @@
     // values: base, top, height, speed
     // el: is dom object, return: el cache values
     var createBlock = function(el) {
-      var dataPercentage = el.getAttribute( 'rellax-percentage' );
-      var dataSpeed = el.getAttribute( 'rellax-speed' );
+      var dataPercentage = el.getAttribute( 'data-rellax-percentage' );
+      var dataSpeed = el.getAttribute( 'data-rellax-speed' );
 
       // initializing at scrollY = 0 (top of browser)
       // ensures elements are positioned based on HTML layout.
