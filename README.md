@@ -71,6 +71,18 @@ There's two ways to implement centering, either on specific elements or as a glo
   rellax.destroy();
 </script>
 ```
+### Callback
+```html
+<script>
+  // Start Rellax
+  var rellax = new Rellax('.rellax-blur-card', {
+    callback: function(position) {
+      // callback every position change
+      console.log(position);
+    }
+  });
+</script>
+```
 ## In the Wild
 If you're using Rellax in production, we'd love to list you here! Let us know: moe@dixonandmoe.com
 - [EthWorks](http://ethworks.io/)

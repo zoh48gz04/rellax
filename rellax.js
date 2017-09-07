@@ -66,6 +66,7 @@
       speed: -2,
       center: false,
       round: true,
+      callback: function() {},
     };
 
     // User defined options (might have more in the future)
@@ -238,6 +239,7 @@
         var translate = 'translate3d(0,' + position + 'px,0) ' + blocks[i].transform;
         self.elems[i].style[transformProp] = translate;
       }
+      self.options.callback(position);
     };
 
 
