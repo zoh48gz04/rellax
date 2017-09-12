@@ -78,6 +78,7 @@ If you're using Rellax in production, we'd love to list you here! Let us know: m
 - [Lorem Ipsum Generator](https://loremipsumgenerator.com/)
 - [Alex Bailon Portfolio](http://www.iambailon.com/)
 - [Terry Design](http://terrydesign.co.uk/)
+- [The Rixey](http://www.livetherixey.com/)
 
 Learn Rellax and other web animation skills with a course on [CSS Animation Rocks](http://courses.cssanimation.rocks/p/level-up)
 
