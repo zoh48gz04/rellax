@@ -61,6 +61,16 @@ There's two ways to implement centering, either on specific elements or as a glo
   });
 </script>
 ```
+### z-index
+If you want to sort your elements properly in the Z space, you can use the data-rellax-zindex property
+```html
+<div class="rellax">
+  I’m that default chill speed of "-2" and default z-index of 0
+</div>
+<div class="rellax" data-rellax-speed="7" data-rellax-zindex="5">
+  I’m super fast!! And on top of the previous element, I'm z-index 5!!
+</div>
+```
 ### Destroy
 ```html
 <script>
