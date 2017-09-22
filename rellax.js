@@ -127,9 +127,9 @@
     // values: base, top, height, speed
     // el: is dom object, return: el cache values
     var createBlock = function(el) {
-      var dataPercentage = el.dataset.rellaxPercentage;
-      var dataSpeed = el.dataset.rellaxSpeed;
-      var dataZindex = el.dataset.rellaxZindex || 0;
+      var dataPercentage = el.getAttribute( 'data-rellax-percentage' );
+      var dataSpeed = el.getAttribute( 'data-rellax-speed' );
+      var dataZindex = el.getAttribute( 'data-rellax-zindex' ) || 0;
 
       // initializing at scrollY = 0 (top of browser)
       // ensures elements are positioned based on HTML layout.
