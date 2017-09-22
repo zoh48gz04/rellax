@@ -61,6 +61,16 @@ There's two ways to implement centering, either on specific elements or as a glo
   });
 </script>
 ```
+### z-index
+If you want to sort your elements properly in the Z space, you can use the data-rellax-zindex property
+```html
+<div class="rellax">
+  I’m that default chill speed of "-2" and default z-index of 0
+</div>
+<div class="rellax" data-rellax-speed="7" data-rellax-zindex="5">
+  I’m super fast!! And on top of the previous element, I'm z-index 5!!
+</div>
+```
 ### Destroy
 ```html
 <script>
@@ -71,6 +81,18 @@ There's two ways to implement centering, either on specific elements or as a glo
   rellax.destroy();
 </script>
 ```
+### Callback
+```html
+<script>
+  // Start Rellax
+  var rellax = new Rellax('.rellax-blur-card', {
+    callback: function(position) {
+      // callback every position change
+      console.log(position);
+    }
+  });
+</script>
+```
 ## In the Wild
 If you're using Rellax in production, we'd love to list you here! Let us know: moe@dixonandmoe.com
 - [EthWorks](http://ethworks.io/)
@@ -78,6 +100,7 @@ If you're using Rellax in production, we'd love to list you here! Let us know: m
 - [Lorem Ipsum Generator](https://loremipsumgenerator.com/)
 - [Alex Bailon Portfolio](http://www.iambailon.com/)
 - [Terry Design](http://terrydesign.co.uk/)
+- [The Rixey](http://www.livetherixey.com/)
 
 Learn Rellax and other web animation skills with a course on [CSS Animation Rocks](http://courses.cssanimation.rocks/p/level-up)
 
@@ -90,3 +113,4 @@ In the spirit of lightweight javascript, the build processes (thus far) is light
 4. Fix lint issues then use [Google Closure Compiler](https://closure-compiler.appspot.com/home) to minify
 5. 🍻
 
+<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/EZvbHDYuZi3d3a4ywYAJuKJY/dixonandmoe/rellax'>  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/EZvbHDYuZi3d3a4ywYAJuKJY/dixonandmoe/rellax.svg' /></a>
