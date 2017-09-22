@@ -129,6 +129,7 @@
     var createBlock = function(el) {
       var dataPercentage = el.dataset.rellaxPercentage;
       var dataSpeed = el.dataset.rellaxSpeed;
+      var dataZindex = el.dataset.rellaxZindex || 0;
 
       // initializing at scrollY = 0 (top of browser)
       // ensures elements are positioned based on HTML layout.
@@ -181,7 +182,8 @@
         height: blockHeight,
         speed: speed,
         style: style,
-        transform: transform
+        transform: transform,
+        zindex: dataZindex
       };
     };
 
@@ -234,9 +236,11 @@
         // Subtracting initialize value, so element stays in same spot as HTML
         var position = updatePosition(percentage, blocks[i].speed) - blocks[i].base;
 
+        var zindex = blocks[i].zindex;
+
         // Move that element
         // (Set the new translation and append initial inline transforms.)
-        var translate = 'translate3d(0,' + position + 'px,0) ' + blocks[i].transform;
+        var translate = 'translate3d(0,' + position + 'px,' + zindex + 'px) ' + blocks[i].transform;
         self.elems[i].style[transformProp] = translate;
       }
       self.options.callback(position);
