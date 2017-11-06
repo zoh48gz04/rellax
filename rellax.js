@@ -214,7 +214,7 @@
     // Allow for decimal pixel values
     var updatePosition = function(percentage, speed) {
       var value = (speed * (100 * (1 - percentage)));
-      return self.options.round ? Math.round(value * 10) / 10 : value;
+      return self.options.round ? Math.round(value) : Math.round(value * 100) / 100;
     };
 
 
