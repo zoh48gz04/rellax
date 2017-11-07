@@ -187,8 +187,8 @@
       }
 
       return {
-        baseX: bases['x'],
-        baseY: bases['y'],
+        baseX: bases.x,
+        baseY: bases.y,
         top: blockTop,
         left: blockLeft,
         height: blockHeight,
@@ -242,8 +242,8 @@
       var valueX = (speed * (100 * (1 - percentageX)));
       var valueY = (speed * (100 * (1 - percentageY)));
 
-      result['x'] = self.options.round ? Math.round(valueX) : Math.round(valueX * 100) / 100;
-      result['y'] = self.options.round ? Math.round(valueY) : Math.round(valueY * 100) / 100;
+      result.x = self.options.round ? Math.round(valueX) : Math.round(valueX * 100) / 100;
+      result.y = self.options.round ? Math.round(valueY) : Math.round(valueY * 100) / 100;
 
       return result;
     };
@@ -267,8 +267,8 @@
 
         // Subtracting initialize value, so element stays in same spot as HTML
         var positions = updatePosition(percentageX, percentageY, blocks[i].speed);// - blocks[i].baseX;
-        var positionY = positions['y'] - blocks[i].baseY;
-        var positionX = positions['x'] - blocks[i].baseX;
+        var positionY = positions.y - blocks[i].baseY;
+        var positionX = positions.x - blocks[i].baseX;
 
         var zindex = blocks[i].zindex;
 
