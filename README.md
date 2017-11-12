@@ -95,6 +95,7 @@ If you want to sort your elements properly in the Z space, you can use the data-
 ```
 ## In the Wild
 If you're using Rellax in production, we'd love to list you here! Let us know: moe@dixonandmoe.com
+- [Microsoft Fluent](https://fluent.microsoft.com/)
 - [EthWorks](http://ethworks.io/)
 - [Airgora](https://www.airgora.com/competition)
 - [Lorem Ipsum Generator](https://loremipsumgenerator.com/)
