@@ -30,6 +30,8 @@
 
     var posY = 0; // set it to -1 so the animate function gets called at least once
     var screenY = 0;
+    var posX = 0;
+    var screenX = 0;
     var blocks = [];
     var pause = false;
 
@@ -44,17 +46,17 @@
 
     // check which transform property to use
     var transformProp = window.transformProp || (function(){
-      var testEl = document.createElement('div');
-      if (testEl.style.transform == null) {
-        var vendors = ['Webkit', 'Moz', 'ms'];
-        for (var vendor in vendors) {
-          if (testEl.style[ vendors[vendor] + 'Transform' ] !== undefined) {
-            return vendors[vendor] + 'Transform';
+        var testEl = document.createElement('div');
+        if (testEl.style.transform == null) {
+          var vendors = ['Webkit', 'Moz', 'ms'];
+          for (var vendor in vendors) {
+            if (testEl.style[ vendors[vendor] + 'Transform' ] !== undefined) {
+              return vendors[vendor] + 'Transform';
+            }
           }
         }
-      }
-      return 'transform';
-    })();
+        return 'transform';
+      })();
 
     // limit the given number in the range [min, max]
     var clamp = function(num, min, max) {
@@ -66,6 +68,8 @@
       speed: -2,
       center: false,
       round: true,
+      vertical: true,
+      horizontal: false,
       callback: function() {},
     };
 
@@ -102,6 +106,7 @@
     // Bind scroll and resize to animate method
     var init = function() {
       screenY = window.innerHeight;
+      screenX = window.innerWidth;
       setPosition();
 
       // Get and cache initial position of all elements
@@ -131,19 +136,24 @@
       var dataSpeed = el.getAttribute( 'data-rellax-speed' );
       var dataZindex = el.getAttribute( 'data-rellax-zindex' ) || 0;
 
-      // initializing at scrollY = 0 (top of browser)
+      // initializing at scrollY = 0 (top of browser), scrollX = 0 (left of browser)
       // ensures elements are positioned based on HTML layout.
       //
-      // If the element has the percentage attribute, the posY needs to be
+      // If the element has the percentage attribute, the posY and posX needs to be
       // the current scroll position's value, so that the elements are still positioned based on HTML layout
-      var posY = dataPercentage || self.options.center ? (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop) : 0;
+      var posY = self.options.vertical ? ( dataPercentage || self.options.center ? (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop) : 0 ) : 0;
+      var posX = self.options.horizontal ? ( dataPercentage || self.options.center ? (window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft) : 0 ) : 0;
 
       var blockTop = posY + el.getBoundingClientRect().top;
       var blockHeight = el.clientHeight || el.offsetHeight || el.scrollHeight;
 
+      var blockLeft = posX + el.getBoundingClientRect().left;
+      var blockWidth = el.clientWidth || el.offsetWidth || el.scrollWidth;
+
       // apparently parallax equation everyone uses
-      var percentage = dataPercentage ? dataPercentage : (posY - blockTop + screenY) / (blockHeight + screenY);
-      if(self.options.center){ percentage = 0.5; }
+      var percentageY = dataPercentage ? dataPercentage : (posY - blockTop + screenY) / (blockHeight + screenY);
+      var percentageX = dataPercentage ? dataPercentage : (posX - blockLeft + screenX) / (blockWidth + screenX);
+      if(self.options.center){ percentageX = 0.5; percentageY = 0.5; }
 
       // Optional individual block speed as data attr, otherwise global speed
       // Check if has percentage attr, and limit speed to 5, else limit it to 10
@@ -152,7 +162,7 @@
         speed = clamp(dataSpeed || self.options.speed, -5, 5);
       }
 
-      var base = updatePosition(percentage, speed);
+      var bases = updatePosition(percentageX, percentageY, speed);
 
       // ~~Store non-translate3d transforms~~
       // Store inline styles and extract transforms
@@ -177,9 +187,12 @@
       }
 
       return {
-        base: base,
+        baseX: bases.x,
+        baseY: bases.y,
         top: blockTop,
+        left: blockLeft,
         height: blockHeight,
+        width: blockWidth,
         speed: speed,
         style: style,
         transform: transform,
@@ -187,11 +200,12 @@
       };
     };
 
-    // set scroll position (posY)
+    // set scroll position (posY, posX)
     // side effect method is not ideal, but okay for now
     // returns true if the scroll changed, false if nothing happened
     var setPosition = function() {
       var oldY = posY;
+      var oldX = posX;
 
       if (window.pageYOffset !== undefined) {
         posY = window.pageYOffset;
@@ -199,7 +213,18 @@
         posY = (document.documentElement || document.body.parentNode || document.body).scrollTop;
       }
 
-      if (oldY != posY) {
+      if (window.pageXOffset !== undefined) {
+        posX = window.pageXOffset;
+      } else {
+        posX = (document.documentElement || document.body.parentNode || document.body).scrollLeft;
+      }
+
+      if (oldY != posY && self.options.vertical) {
+        // scroll changed, return true
+        return true;
+      }
+
+      if (oldX != posX && self.options.horizontal) {
         // scroll changed, return true
         return true;
       }
@@ -210,11 +235,17 @@
 
 
     // Ahh a pure function, gets new transform value
-    // based on scrollPostion and speed
+    // based on scrollPosition and speed
     // Allow for decimal pixel values
-    var updatePosition = function(percentage, speed) {
-      var value = (speed * (100 * (1 - percentage)));
-      return self.options.round ? Math.round(value) : Math.round(value * 100) / 100;
+    var updatePosition = function(percentageX, percentageY, speed) {
+      var result = {};
+      var valueX = (speed * (100 * (1 - percentageX)));
+      var valueY = (speed * (100 * (1 - percentageY)));
+
+      result.x = self.options.round ? Math.round(valueX) : Math.round(valueX * 100) / 100;
+      result.y = self.options.round ? Math.round(valueY) : Math.round(valueY * 100) / 100;
+
+      return result;
     };
 
 
@@ -231,19 +262,22 @@
     // Transform3d on parallax element
     var animate = function() {
       for (var i = 0; i < self.elems.length; i++){
-        var percentage = ((posY - blocks[i].top + screenY) / (blocks[i].height + screenY));
+        var percentageY = ((posY - blocks[i].top + screenY) / (blocks[i].height + screenY));
+        var percentageX = ((posX - blocks[i].left + screenX) / (blocks[i].width + screenX));
 
         // Subtracting initialize value, so element stays in same spot as HTML
-        var position = updatePosition(percentage, blocks[i].speed) - blocks[i].base;
+        var positions = updatePosition(percentageX, percentageY, blocks[i].speed);// - blocks[i].baseX;
+        var positionY = positions.y - blocks[i].baseY;
+        var positionX = positions.x - blocks[i].baseX;
 
         var zindex = blocks[i].zindex;
 
         // Move that element
         // (Set the new translation and append initial inline transforms.)
-        var translate = 'translate3d(0,' + position + 'px,' + zindex + 'px) ' + blocks[i].transform;
+        var translate = 'translate3d(' + (self.options.horizontal ? positionX : '0') + 'px,' + (self.options.vertical ? positionY : '0') + 'px,' + zindex + 'px) ' + blocks[i].transform;
         self.elems[i].style[transformProp] = translate;
       }
-      self.options.callback(position);
+      self.options.callback(positions);
     };
 
 

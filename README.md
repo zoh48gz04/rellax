@@ -33,6 +33,8 @@ Have any suggestions or feedback? Reach out [@dixonandmoe](https://twitter.com/d
     speed: -2,
     center: false,
     round: true,
+    vertical: true,
+    horizontal: false
   });
 </script>
 ```
@@ -71,6 +73,12 @@ If you want to sort your elements properly in the Z space, you can use the data-
   I’m super fast!! And on top of the previous element, I'm z-index 5!!
 </div>
 ```
+
+### Horizontal Parallax
+Horizontal parallax is disabled by default. You can enable it by passing `horizontal: true` in the settings block.
+This feature is intended for panoramic style websites, where users scroll horizontally instead of vertically.
+Note that this can work together at the same time with the default vertical parallax. If you do not want this, pass `vertical: false` in the settings block.
+
 ### Destroy
 ```html
 <script>
@@ -86,9 +94,9 @@ If you want to sort your elements properly in the Z space, you can use the data-
 <script>
   // Start Rellax
   var rellax = new Rellax('.rellax-blur-card', {
-    callback: function(position) {
+    callback: function(positions) {
       // callback every position change
-      console.log(position);
+      console.log(positions);
     }
   });
 </script>
