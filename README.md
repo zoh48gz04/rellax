@@ -105,6 +105,7 @@ Note that this can work together at the same time with the default vertical para
 If you're using Rellax in production, we'd love to list you here! Let us know: moe@dixonandmoe.com
 - [Microsoft Fluent](https://fluent.microsoft.com/)
 - [Gucci Gift](http://gift.gucci.com/)
+- [Finch](https://finch.io/)
 - [EthWorks](http://ethworks.io/)
 - [Airgora](https://www.airgora.com/competition)
 - [Lorem Ipsum Generator](https://loremipsumgenerator.com/)
