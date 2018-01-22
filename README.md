@@ -112,6 +112,7 @@ If you're using Rellax in production, we'd love to list you here! Let us know: m
 - [Alex Bailon Portfolio](http://www.iambailon.com/)
 - [Terry Design](http://terrydesign.co.uk/)
 - [The Rixey](http://www.livetherixey.com/)
+- [Laws of UX](https://lawsofux.com/)
 
 Learn Rellax and other web animation skills with a course on [CSS Animation Rocks](http://courses.cssanimation.rocks/p/level-up)
 
