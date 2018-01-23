@@ -101,6 +101,17 @@ Note that this can work together at the same time with the default vertical para
   });
 </script>
 ```
+
+### Target node
+Instead of using a className you can use a node, handy when using React and you want to use `refs` instead of `className`.
+```jsx
+<div ref={ref => { this.rellaxRef = ref }}>
+  I’m that default chill speed of "-2"
+</div>
+
+var rellax = new Rellax(this.rellaxRef)
+```
+
 ## In the Wild
 If you're using Rellax in production, we'd love to list you here! Let us know: moe@dixonandmoe.com
 - [Microsoft Fluent](https://fluent.microsoft.com/)

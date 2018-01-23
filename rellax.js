@@ -47,7 +47,7 @@
     // check which transform property to use
     var transformProp = window.transformProp || (function(){
         var testEl = document.createElement('div');
-        if (testEl.style.transform == null) {
+        if (testEl.style.transform === null) {
           var vendors = ['Webkit', 'Moz', 'ms'];
           for (var vendor in vendors) {
             if (testEl.style[ vendors[vendor] + 'Transform' ] !== undefined) {
@@ -88,7 +88,8 @@
       el = '.rellax';
     }
 
-    var elements = document.querySelectorAll(el);
+    // check if el is a className or a node
+    var elements = typeof el === 'string' ? document.querySelectorAll(el) : [el];
 
     // Now query selector
     if (elements.length > 0) {
