@@ -101,33 +101,28 @@
       throw new Error("The elements you're trying to select don't exist.");
     }
 
-
     // Let's kick this script off
     // Build array for cached element values
     // Bind scroll and resize to animate method
     var init = function() {
+      for (var i = 0; i < blocks.length; i++){
+        self.elems[i].style.cssText = blocks[i].style;
+      }
+
+      blocks = [];
+
       screenY = window.innerHeight;
       screenX = window.innerWidth;
       setPosition();
 
       // Get and cache initial position of all elements
-      for (var i = 0; i < self.elems.length; i++){
+      for (i = 0; i < self.elems.length; i++){
         var block = createBlock(self.elems[i]);
         blocks.push(block);
       }
 
-      window.addEventListener('resize', function(){
-        animate();
-      });
-
-      // Start the loop
-      update();
-
-      // The loop does nothing if the scrollPosition did not change
-      // so call animate to make sure every element has their transforms
       animate();
     };
-
 
     // We want to cache the parallax blocks'
     // values: base, top, height, speed
@@ -234,7 +229,6 @@
       return false;
     };
 
-
     // Ahh a pure function, gets new transform value
     // based on scrollPosition and speed
     // Allow for decimal pixel values
@@ -249,8 +243,7 @@
       return result;
     };
 
-
-    //
+    // Loop
     var update = function() {
       if (setPosition() && pause === false) {
         animate();
@@ -278,9 +271,8 @@
         var translate = 'translate3d(' + (self.options.horizontal ? positionX : '0') + 'px,' + (self.options.vertical ? positionY : '0') + 'px,' + zindex + 'px) ' + blocks[i].transform;
         self.elems[i].style[transformProp] = translate;
       }
-      self.options.callback(positions);
+      self.options.callback();
     };
-
 
     self.destroy = function() {
       for (var i = 0; i < self.elems.length; i++){
@@ -289,8 +281,17 @@
       pause = true;
     };
 
-
+    // Init
     init();
+
+    // Re-init on window resize
+    window.addEventListener('resize', function() {
+      init();
+    });
+
+    // Start the loop
+    update();
+
     return self;
   };
   return Rellax;
