@@ -279,6 +279,9 @@
     // Start the loop
     update();
 
+    // Allow to recalculate the initial values whenever we want
+    self.refresh = init;
+
     return self;
   };
   return Rellax;
