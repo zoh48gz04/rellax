@@ -1,6 +1,6 @@
 
 // ------------------------------------------
-// Rellax.js - v1.0.0
+// Rellax.js
 // Buttery smooth parallax library
 // Copyright (c) 2016 Moe Amaya (@moeamaya)
 // MIT license
@@ -28,7 +28,7 @@
 
     var self = Object.create(Rellax.prototype);
 
-    var posY = 0; // set it to -1 so the animate function gets called at least once
+    var posY = 0;
     var screenY = 0;
     var posX = 0;
     var screenX = 0;
@@ -58,11 +58,6 @@
         return 'transform';
       })();
 
-    // limit the given number in the range [min, max]
-    var clamp = function(num, min, max) {
-      return (num <= min) ? min : ((num >= max) ? max : num);
-    };
-
     // Default Settings
     self.options = {
       speed: -2,
@@ -79,9 +74,6 @@
         self.options[key] = options[key];
       });
     }
-
-    // If some clown tries to crank speed, limit them to +-10
-    self.options.speed = clamp(self.options.speed, -10, 10);
 
     // By default, rellax class
     if (!el) {
@@ -103,7 +95,6 @@
 
     // Let's kick this script off
     // Build array for cached element values
-    // Bind scroll and resize to animate method
     var init = function() {
       for (var i = 0; i < blocks.length; i++){
         self.elems[i].style.cssText = blocks[i].style;
@@ -116,7 +107,7 @@
       setPosition();
 
       // Get and cache initial position of all elements
-      for (i = 0; i < self.elems.length; i++){
+      for (var i = 0; i < self.elems.length; i++){
         var block = createBlock(self.elems[i]);
         blocks.push(block);
       }
@@ -152,11 +143,7 @@
       if(self.options.center){ percentageX = 0.5; percentageY = 0.5; }
 
       // Optional individual block speed as data attr, otherwise global speed
-      // Check if has percentage attr, and limit speed to 5, else limit it to 10
-      var speed = dataSpeed ? clamp(dataSpeed, -10, 10) : self.options.speed;
-      if (dataPercentage || self.options.center) {
-        speed = clamp(dataSpeed || self.options.speed, -5, 5);
-      }
+      var speed = dataSpeed ? dataSpeed : self.options.speed;
 
       var bases = updatePosition(percentageX, percentageY, speed);
 
