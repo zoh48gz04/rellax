@@ -242,12 +242,13 @@
 
     // Transform3d on parallax element
     var animate = function() {
+      var positions;
       for (var i = 0; i < self.elems.length; i++){
         var percentageY = ((posY - blocks[i].top + screenY) / (blocks[i].height + screenY));
         var percentageX = ((posX - blocks[i].left + screenX) / (blocks[i].width + screenX));
 
         // Subtracting initialize value, so element stays in same spot as HTML
-        var positions = updatePosition(percentageX, percentageY, blocks[i].speed);// - blocks[i].baseX;
+        positions = updatePosition(percentageX, percentageY, blocks[i].speed);// - blocks[i].baseX;
         var positionY = positions.y - blocks[i].baseY;
         var positionX = positions.x - blocks[i].baseX;
 
@@ -258,7 +259,7 @@
         var translate = 'translate3d(' + (self.options.horizontal ? positionX : '0') + 'px,' + (self.options.vertical ? positionY : '0') + 'px,' + zindex + 'px) ' + blocks[i].transform;
         self.elems[i].style[transformProp] = translate;
       }
-      self.options.callback();
+      self.options.callback(positions);
     };
 
     self.destroy = function() {
