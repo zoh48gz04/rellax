@@ -1,6 +1,6 @@
 
 // ------------------------------------------
-// Rellax.js - v1.0.0
+// Rellax.js
 // Buttery smooth parallax library
 // Copyright (c) 2016 Moe Amaya (@moeamaya)
 // MIT license
@@ -28,7 +28,7 @@
 
     var self = Object.create(Rellax.prototype);
 
-    var posY = 0; // set it to -1 so the animate function gets called at least once
+    var posY = 0;
     var screenY = 0;
     var posX = 0;
     var screenX = 0;
@@ -58,11 +58,6 @@
         return 'transform';
       })();
 
-    // limit the given number in the range [min, max]
-    var clamp = function(num, min, max) {
-      return (num <= min) ? min : ((num >= max) ? max : num);
-    };
-
     // Default Settings
     self.options = {
       speed: -2,
@@ -79,9 +74,6 @@
         self.options[key] = options[key];
       });
     }
-
-    // If some clown tries to crank speed, limit them to +-10
-    self.options.speed = clamp(self.options.speed, -10, 10);
 
     // By default, rellax class
     if (!el) {
@@ -101,11 +93,15 @@
       throw new Error("The elements you're trying to select don't exist.");
     }
 
-
     // Let's kick this script off
     // Build array for cached element values
-    // Bind scroll and resize to animate method
     var init = function() {
+      for (var i = 0; i < blocks.length; i++){
+        self.elems[i].style.cssText = blocks[i].style;
+      }
+
+      blocks = [];
+
       screenY = window.innerHeight;
       screenX = window.innerWidth;
       setPosition();
@@ -116,18 +112,8 @@
         blocks.push(block);
       }
 
-      window.addEventListener('resize', function(){
-        animate();
-      });
-
-      // Start the loop
-      update();
-
-      // The loop does nothing if the scrollPosition did not change
-      // so call animate to make sure every element has their transforms
       animate();
     };
-
 
     // We want to cache the parallax blocks'
     // values: base, top, height, speed
@@ -157,11 +143,7 @@
       if(self.options.center){ percentageX = 0.5; percentageY = 0.5; }
 
       // Optional individual block speed as data attr, otherwise global speed
-      // Check if has percentage attr, and limit speed to 5, else limit it to 10
-      var speed = dataSpeed ? clamp(dataSpeed, -10, 10) : self.options.speed;
-      if (dataPercentage || self.options.center) {
-        speed = clamp(dataSpeed || self.options.speed, -5, 5);
-      }
+      var speed = dataSpeed ? dataSpeed : self.options.speed;
 
       var bases = updatePosition(percentageX, percentageY, speed);
 
@@ -234,7 +216,6 @@
       return false;
     };
 
-
     // Ahh a pure function, gets new transform value
     // based on scrollPosition and speed
     // Allow for decimal pixel values
@@ -249,8 +230,7 @@
       return result;
     };
 
-
-    //
+    // Loop
     var update = function() {
       if (setPosition() && pause === false) {
         animate();
@@ -262,12 +242,13 @@
 
     // Transform3d on parallax element
     var animate = function() {
+      var positions;
       for (var i = 0; i < self.elems.length; i++){
         var percentageY = ((posY - blocks[i].top + screenY) / (blocks[i].height + screenY));
         var percentageX = ((posX - blocks[i].left + screenX) / (blocks[i].width + screenX));
 
         // Subtracting initialize value, so element stays in same spot as HTML
-        var positions = updatePosition(percentageX, percentageY, blocks[i].speed);// - blocks[i].baseX;
+        positions = updatePosition(percentageX, percentageY, blocks[i].speed);// - blocks[i].baseX;
         var positionY = positions.y - blocks[i].baseY;
         var positionX = positions.x - blocks[i].baseX;
 
@@ -281,7 +262,6 @@
       self.options.callback(positions);
     };
 
-
     self.destroy = function() {
       for (var i = 0; i < self.elems.length; i++){
         self.elems[i].style.cssText = blocks[i].style;
@@ -289,8 +269,20 @@
       pause = true;
     };
 
-
+    // Init
     init();
+
+    // Re-init on window resize
+    window.addEventListener('resize', function() {
+      init();
+    });
+
+    // Start the loop
+    update();
+
+    // Allow to recalculate the initial values whenever we want
+    self.refresh = init;
+
     return self;
   };
   return Rellax;

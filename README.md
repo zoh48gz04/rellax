@@ -40,6 +40,9 @@ Have any suggestions or feedback? Reach out [@dixonandmoe](https://twitter.com/d
 ```
 ## Features
 
+### Speed
+Use the `data-rellax-speed` attribute to set the speed of a `.rellax` element to something other than the default value (which is `-2`). A negative value will make it move slower than regular scrolling, and a positive value will make it move faster. We recommend keeping the speed between `-10` and `10`.
+
 ### Centering
 After some fantastic work from [@p-realinho](https://github.com/p-realinho), we just released the ability to center parallax elements in your viewport! We'll be building a nice demo website, but for now check out the tests folder for several examples of how it works.
 
@@ -63,6 +66,7 @@ There's two ways to implement centering, either on specific elements or as a glo
   });
 </script>
 ```
+
 ### z-index
 If you want to sort your elements properly in the Z space, you can use the data-rellax-zindex property
 ```html
@@ -89,6 +93,7 @@ Note that this can work together at the same time with the default vertical para
   rellax.destroy();
 </script>
 ```
+
 ### Callback
 ```html
 <script>
