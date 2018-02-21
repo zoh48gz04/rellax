@@ -122,6 +122,7 @@ If you're using Rellax in production, we'd love to list you here! Let us know: m
 - [Microsoft Fluent](https://fluent.microsoft.com/)
 - [Gucci Gift](http://gift.gucci.com/)
 - [Finch](https://finch.io/)
+- [Product Designer in San Francisco](https://moeamaya.com/)
 - [EthWorks](http://ethworks.io/)
 - [Airgora](https://www.airgora.com/competition)
 - [Lorem Ipsum Generator](https://loremipsumgenerator.com/)
@@ -129,6 +130,7 @@ If you're using Rellax in production, we'd love to list you here! Let us know: m
 - [Terry Design](http://terrydesign.co.uk/)
 - [The Rixey](http://www.livetherixey.com/)
 - [Laws of UX](https://lawsofux.com/)
+- [Deesen](https://www.deeson.co.uk/)
 
 Learn Rellax and other web animation skills with a course on [CSS Animation Rocks](http://courses.cssanimation.rocks/p/level-up)
 
