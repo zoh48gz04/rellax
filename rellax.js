@@ -190,17 +190,9 @@
       var oldY = posY;
       var oldX = posX;
 
-      if (window.pageYOffset !== undefined) {
-        posY = window.pageYOffset;
-      } else {
-        posY = (document.documentElement || document.body.parentNode || document.body).scrollTop;
-      }
+      posY = (document.documentElement || document.body.parentNode || document.body).scrollTop || window.pageYOffset;
 
-      if (window.pageXOffset !== undefined) {
-        posX = window.pageXOffset;
-      } else {
-        posX = (document.documentElement || document.body.parentNode || document.body).scrollLeft;
-      }
+      posX = (document.documentElement || document.body.parentNode || document.body).scrollLeft || window.pageXOffset;
 
       if (oldY != posY && self.options.vertical) {
         // scroll changed, return true
