@@ -1,6 +1,6 @@
 # RELLAX
 
-Rellax is a buttery smooth, super lightweight (1021bytes gzipped), vanilla javascript parallax library. **Update:** Rellax now works on mobile (v1.0.0). 
+Rellax is a buttery smooth, super lightweight (1021bytes gzipped), vanilla javascript parallax library. **Update:** Rellax now works on mobile (v1.0.0).
 
 * [Demo Website](https://dixonandmoe.com/rellax/)
 
@@ -67,7 +67,7 @@ There's two ways to implement centering, either on specific elements or as a glo
 </script>
 ```
 
-### z-index
+### Z-index
 If you want to sort your elements properly in the Z space, you can use the data-rellax-zindex property
 ```html
 <div class="rellax">
@@ -83,12 +83,23 @@ Horizontal parallax is disabled by default. You can enable it by passing `horizo
 This feature is intended for panoramic style websites, where users scroll horizontally instead of vertically.
 Note that this can work together at the same time with the default vertical parallax. If you do not want this, pass `vertical: false` in the settings block.
 
+### Refresh
+```html
+<script>
+  // Start Rellax
+  var rellax = new Rellax('.rellax');
+
+  // Destroy and create again parallax with previous settings
+  rellax.refresh();
+</script>
+```
+
 ### Destroy
 ```html
 <script>
   // Start Rellax
   var rellax = new Rellax('.rellax');
-  
+
   // End Rellax and reset parallax elements to their original positions
   rellax.destroy();
 </script>
@@ -130,7 +141,7 @@ If you're using Rellax in production, we'd love to list you here! Let us know: m
 - [Terry Design](http://terrydesign.co.uk/)
 - [The Rixey](http://www.livetherixey.com/)
 - [Laws of UX](https://lawsofux.com/)
-- [Deesen](https://www.deeson.co.uk/)
+- [Deeson](https://www.deeson.co.uk/)
 
 Learn Rellax and other web animation skills with a course on [CSS Animation Rocks](http://courses.cssanimation.rocks/p/level-up)
 

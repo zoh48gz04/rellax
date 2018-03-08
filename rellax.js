@@ -62,6 +62,7 @@
     self.options = {
       speed: -2,
       center: false,
+      wrapper: null,
       round: true,
       vertical: true,
       horizontal: false,
@@ -93,6 +94,29 @@
       throw new Error("The elements you're trying to select don't exist.");
     }
 
+    // Has a wrapper and it exists
+    if (self.options.wrapper) {
+      if (!self.options.wrapper.nodeType) {
+        var wrapper = document.querySelector(self.options.wrapper);
+
+        if (wrapper) {
+          self.options.wrapper = wrapper;
+        } else {
+          throw new Error("The wrapper you're trying to use don't exist.");
+        }
+      }
+    }
+
+
+    // Get and cache initial position of all elements
+    var cacheBlocks = function() {
+      for (var i = 0; i < self.elems.length; i++){
+        var block = createBlock(self.elems[i]);
+        blocks.push(block);
+      }
+    };
+
+
     // Let's kick this script off
     // Build array for cached element values
     var init = function() {
@@ -106,11 +130,7 @@
       screenX = window.innerWidth;
       setPosition();
 
-      // Get and cache initial position of all elements
-      for (var i = 0; i < self.elems.length; i++){
-        var block = createBlock(self.elems[i]);
-        blocks.push(block);
-      }
+      cacheBlocks();
 
       animate();
     };
@@ -128,7 +148,8 @@
       //
       // If the element has the percentage attribute, the posY and posX needs to be
       // the current scroll position's value, so that the elements are still positioned based on HTML layout
-      var posY = self.options.vertical ? ( dataPercentage || self.options.center ? (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop) : 0 ) : 0;
+      var wrapperPosY = self.options.wrapper ? self.options.wrapper.scrollTop : (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop);
+      var posY = self.options.vertical ? ( dataPercentage || self.options.center ? wrapperPosY : 0 ) : 0;
       var posX = self.options.horizontal ? ( dataPercentage || self.options.center ? (window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft) : 0 ) : 0;
 
       var blockTop = posY + el.getBoundingClientRect().top;
@@ -190,9 +211,7 @@
       var oldY = posY;
       var oldX = posX;
 
-      posY = (document.documentElement || document.body.parentNode || document.body).scrollTop || window.pageYOffset;
-
-      posX = (document.documentElement || document.body.parentNode || document.body).scrollLeft || window.pageXOffset;
+      posY = self.options.wrapper ? self.options.wrapper.scrollTop : (document.documentElement || document.body.parentNode || document.body).scrollTop || window.pageYOffset;
 
       if (oldY != posY && self.options.vertical) {
         // scroll changed, return true
