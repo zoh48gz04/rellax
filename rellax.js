@@ -212,6 +212,8 @@
       var oldX = posX;
 
       posY = self.options.wrapper ? self.options.wrapper.scrollTop : (document.documentElement || document.body.parentNode || document.body).scrollTop || window.pageYOffset;
+      posX = self.options.wrapper ? self.options.wrapper.scrollLeft : (document.documentElement || document.body.parentNode || document.body).scrollLeft || window.pageXOffset;
+
 
       if (oldY != posY && self.options.vertical) {
         // scroll changed, return true
