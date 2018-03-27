@@ -33,7 +33,7 @@
     var posX = 0;
     var screenX = 0;
     var blocks = [];
-    var pause = false;
+    var pause = true;
 
     // check what requestAnimationFrame to use, and if
     // it's not supported, use the onscroll event
@@ -132,6 +132,11 @@
 
       cacheBlocks();
 
+      // If paused, unpause and set listener for window resizing events
+      if (pause) {
+        window.addEventListener('resize', init);
+        pause = false;
+      }
       animate();
     };
 
@@ -277,16 +282,16 @@
       for (var i = 0; i < self.elems.length; i++){
         self.elems[i].style.cssText = blocks[i].style;
       }
-      pause = true;
+
+      // Remove resize event listener if not pause, and pause
+      if (!pause) {
+        window.removeEventListener('resize', init);
+        pause = true;
+      }
     };
 
     // Init
     init();
-
-    // Re-init on window resize
-    window.addEventListener('resize', function() {
-      init();
-    });
 
     // Start the loop
     update();
