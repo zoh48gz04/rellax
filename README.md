@@ -132,6 +132,7 @@ var rellax = new Rellax(this.rellaxRef)
 If you're using Rellax in production, we'd love to list you here! Let us know: moe@dixonandmoe.com
 - [Microsoft Fluent](https://fluent.microsoft.com/)
 - [Gucci Gift](http://gift.gucci.com/)
+- [Bowmore Scotch](https://www.bowmore.com/)
 - [Finch](https://finch.io/)
 - [Product Designer in San Francisco](https://moeamaya.com/)
 - [EthWorks](http://ethworks.io/)
