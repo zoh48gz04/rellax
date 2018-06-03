@@ -145,16 +145,16 @@ If you're using Rellax in production, we'd love to list you here! Let us know: m
 - [Microsoft Fluent](https://fluent.microsoft.com/)
 - [Gucci Gift](http://gift.gucci.com/)
 - [Bowmore Scotch](https://www.bowmore.com/)
+- [Laws of UX](https://lawsofux.com/)
 - [Finch](https://finch.io/)
 - [Product Designer in San Francisco](https://moeamaya.com/)
+- [Cool Backgrounds](https://coolbackgrounds.io/)
 - [EthWorks](http://ethworks.io/)
 - [Airgora](https://www.airgora.com/competition)
 - [Lorem Ipsum Generator](https://loremipsumgenerator.com/)
-- [Alex Bailon Portfolio](http://www.iambailon.com/)
 - [Terry Design](http://terrydesign.co.uk/)
-- [The Rixey](http://www.livetherixey.com/)
-- [Laws of UX](https://lawsofux.com/)
 - [Deeson](https://www.deeson.co.uk/)
+- [Alex Bailon Portfolio](http://www.iambailon.com/)
 
 ## Development
 In the spirit of lightweight javascript, the build processes (thus far) is lightweight also.
