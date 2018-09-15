@@ -165,3 +165,6 @@ In the spirit of lightweight javascript, the build processes (thus far) is light
 3. Once feature is finished or bug fixed, use [jshint](http://jshint.com/) to lint code
 4. Fix lint issues then use [Google Closure Compiler](https://closure-compiler.appspot.com/home) to minify
 5. 🍻
+
+## Changelog
+- 1.7.0: Scroll position set relative to the the wrapper [PR](https://github.com/dixonandmoe/rellax/pull/125)
