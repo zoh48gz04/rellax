@@ -150,7 +150,7 @@ If you're using Rellax in production, we'd love to list you here! Let us know: m
 - [Product Designer in San Francisco](https://moeamaya.com/)
 - [Cool Backgrounds](https://coolbackgrounds.io/)
 - [EthWorks](http://ethworks.io/)
-- [Service List](https://servicelist.io/)
+- [Unlimited Designs](https://servicelist.io/)
 - [Airgora](https://www.airgora.com/competition)
 - [Lorem Ipsum Generator](https://loremipsumgenerator.com/)
 - [Terry Design](http://terrydesign.co.uk/)
