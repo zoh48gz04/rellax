@@ -167,4 +167,4 @@ In the spirit of lightweight javascript, the build processes (thus far) is light
 5. 🍻
 
 ## Changelog
-- 1.7.0: Scroll position set relative to the the wrapper [PR](https://github.com/dixonandmoe/rellax/pull/125)
+- 1.7.0: Scroll position set relative to the wrapper [PR](https://github.com/dixonandmoe/rellax/pull/125)
