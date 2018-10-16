@@ -42,7 +42,13 @@
       window.mozRequestAnimationFrame ||
       window.msRequestAnimationFrame ||
       window.oRequestAnimationFrame ||
-      function(callback){ setTimeout(callback, 1000 / 60); };
+      function(callback){ return setTimeout(callback, 1000 / 60); };
+
+    // store the id for later use
+    var loopId = null;
+
+    // check what cancelAnimation method to use
+    var clearLoop = window.cancelAnimationFrame || window.mozCancelAnimationFrame || clearTimeout;
 
     // check which transform property to use
     var transformProp = window.transformProp || (function(){
@@ -266,7 +272,7 @@
       }
 
       // loop again
-      loop(update);
+      loopId = loop(update);
     };
 
     // Transform3d on parallax element
@@ -301,6 +307,10 @@
         window.removeEventListener('resize', init);
         pause = true;
       }
+
+      // Clear the animation loop to prevent possible memory leak
+      clearLoop(loopId);
+      loopId = null;
     };
 
     // Init
