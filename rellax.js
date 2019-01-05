@@ -22,7 +22,7 @@
     // Browser globals (root is window)
     root.Rellax = factory();
   }
-}(this, function () {
+}(typeof window !== "undefined" ? window : global, function () {
   var Rellax = function(el, options){
     "use strict";
 
