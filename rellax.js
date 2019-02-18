@@ -154,6 +154,8 @@
       var dataPercentage = el.getAttribute( 'data-rellax-percentage' );
       var dataSpeed = el.getAttribute( 'data-rellax-speed' );
       var dataZindex = el.getAttribute( 'data-rellax-zindex' ) || 0;
+      var dataMin = el.getAttribute( 'data-rellax-min' );
+      var dataMax = el.getAttribute( 'data-rellax-max' );
 
       // initializing at scrollY = 0 (top of browser), scrollX = 0 (left of browser)
       // ensures elements are positioned based on HTML layout.
@@ -217,7 +219,9 @@
         speed: speed,
         style: style,
         transform: transform,
-        zindex: dataZindex
+        zindex: dataZindex,
+        min: dataMin,
+        max: dataMax
       };
     };
 
@@ -286,6 +290,33 @@
         positions = updatePosition(percentageX, percentageY, blocks[i].speed);// - blocks[i].baseX;
         var positionY = positions.y - blocks[i].baseY;
         var positionX = positions.x - blocks[i].baseX;
+
+        // The next two "if" blocks go like this:
+        // Check if a limit is defined (first "min", then "max");
+        // Check if we need to change the Y or the X
+        // (Currently working only if just one of the axes is enabled)
+        // Then, check if the new position is inside the allowed limit
+        // If so, use new position. If not, set position to limit.
+
+        // Check if a min limit is defined
+        if (blocks[i].min !== null) {
+          if (self.options.vertical && !self.options.horizontal) {
+            positionY = positionY <= blocks[i].min ? blocks[i].min : positionY;
+          }
+          if (self.options.horizontal && !self.options.vertical) {
+            positionX = positionX <= blocks[i].min ? blocks[i].min : positionX;
+          }
+        }
+
+        // Check if a max limit is defined
+        if (blocks[i].max !== null) {
+          if (self.options.vertical && !self.options.horizontal) {
+            positionY = positionY >= blocks[i].max ? blocks[i].max : positionY;
+          }
+          if (self.options.horizontal && !self.options.vertical) {
+            positionX = positionX >= blocks[i].max ? blocks[i].max : positionX;
+          }
+        }
 
         var zindex = blocks[i].zindex;
 
