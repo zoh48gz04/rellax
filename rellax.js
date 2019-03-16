@@ -193,9 +193,10 @@
       var transform = '';
 
       // Check if there's an inline styled transform
-      if (style.indexOf('transform') >= 0) {
+      var searchResult = /transform\s*:/i.exec(style);
+      if (searchResult) {
         // Get the index of the transform
-        var index = style.indexOf('transform');
+        var index = searchResult.index;
 
         // Trim the style to the transform point and get the following semi-colon index
         var trimmedStyle = style.slice(index);
