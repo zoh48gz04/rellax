@@ -139,12 +139,15 @@
 
       cacheBlocks();
 
+      animate();
+
       // If paused, unpause and set listener for window resizing events
       if (pause) {
         window.addEventListener('resize', init);
         pause = false;
+        // Start the loop
+        update();
       }
-      animate();
     };
 
     // We want to cache the parallax blocks'
@@ -346,9 +349,6 @@
 
     // Init
     init();
-
-    // Start the loop
-    update();
 
     // Allow to recalculate the initial values whenever we want
     self.refresh = init;
