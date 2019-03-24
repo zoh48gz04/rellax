@@ -172,7 +172,7 @@
         wrapperPosY = scrollPosY - self.options.wrapper.offsetTop;
       }
       var posY = self.options.vertical ? ( dataPercentage || self.options.center ? wrapperPosY : 0 ) : 0;
-      var posX = self.options.horizontal ? ( dataPercentage || self.options.center ? (window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft) : 0 ) : 0;
+      var posX = self.options.horizontal ? ( dataPercentage || self.options.center ? self.options.wrapper ? self.options.wrapper.scrollLeft : (window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft) : 0 ) : 0;
 
       var blockTop = posY + el.getBoundingClientRect().top;
       var blockHeight = el.clientHeight || el.offsetHeight || el.scrollHeight;
