@@ -98,7 +98,8 @@
 
     // The elements don't exist
     else {
-      throw new Error("The elements you're trying to select don't exist.");
+      console.warn("Rellax: The elements you're trying to select don't exist.");
+      return;
     }
 
     // Has a wrapper and it exists
@@ -109,7 +110,8 @@
         if (wrapper) {
           self.options.wrapper = wrapper;
         } else {
-          throw new Error("The wrapper you're trying to use don't exist.");
+          console.warn("Rellax: The wrapper you're trying to use doesn't exist.");
+          return;
         }
       }
     }
