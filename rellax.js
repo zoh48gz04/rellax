@@ -309,10 +309,12 @@
         loopId = null;
 
         // Don't animate until we get a position updating event
-        window.addEventListener('resize', deferredUpdate);
-        window.addEventListener('scroll', deferredUpdate, supportsPassive ? { passive: true } : false);
-        window.addEventListener('orientationchange', deferredUpdate);
-        window.addEventListener('touchmove', deferredUpdate, supportsPassive ? { passive: true } : false);
+        if (pause === false) {
+          window.addEventListener('resize', deferredUpdate);
+          window.addEventListener('scroll', deferredUpdate, supportsPassive ? { passive: true } : false);
+          window.addEventListener('orientationchange', deferredUpdate);
+          window.addEventListener('touchmove', deferredUpdate, supportsPassive ? { passive: true } : false);
+        }
       }
     };
 
