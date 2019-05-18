@@ -290,9 +290,9 @@
     // Remove event listeners and loop again
     var deferredUpdate = function() {
       window.removeEventListener('resize', deferredUpdate);
-      window.removeEventListener('scroll', deferredUpdate);
       window.removeEventListener('orientationchange', deferredUpdate);
-      window.removeEventListener('touchmove', deferredUpdate);
+      (self.options.wrapper ? self.options.wrapper : window).removeEventListener('scroll', deferredUpdate);
+      (self.options.wrapper ? self.options.wrapper : document).removeEventListener('touchmove', deferredUpdate);
 
       // loop again
       loopId = loop(update);
@@ -309,12 +309,10 @@
         loopId = null;
 
         // Don't animate until we get a position updating event
-        if (pause === false) {
-          window.addEventListener('resize', deferredUpdate);
-          window.addEventListener('scroll', deferredUpdate, supportsPassive ? { passive: true } : false);
-          window.addEventListener('orientationchange', deferredUpdate);
-          window.addEventListener('touchmove', deferredUpdate, supportsPassive ? { passive: true } : false);
-        }
+        window.addEventListener('resize', deferredUpdate);
+        window.addEventListener('orientationchange', deferredUpdate);
+        (self.options.wrapper ? self.options.wrapper : window).addEventListener('scroll', deferredUpdate, supportsPassive ? { passive: true } : false);
+        (self.options.wrapper ? self.options.wrapper : document).addEventListener('touchmove', deferredUpdate, supportsPassive ? { passive: true } : false);
       }
     };
 
