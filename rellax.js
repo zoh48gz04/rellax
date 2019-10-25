@@ -79,12 +79,16 @@
     // Default Settings
     self.options = {
       speed: -2,
+	  verticalSpeed: null,
+	  horizontalSpeed: null,
       center: false,
       wrapper: null,
       relativeToWrapper: false,
       round: true,
       vertical: true,
       horizontal: false,
+      verticalScrollAxis: "y",
+      horizontalScrollAxis: "x",
       callback: function() {},
     };
 
@@ -170,9 +174,17 @@
     var createBlock = function(el) {
       var dataPercentage = el.getAttribute( 'data-rellax-percentage' );
       var dataSpeed = el.getAttribute( 'data-rellax-speed' );
+      var dataVerticalSpeed = el.getAttribute('data-rellax-vertical-speed');
+      var dataHorizontalSpeed = el.getAttribute('data-rellax-horizontal-speed');
+      var dataVericalScrollAxis = el.getAttribute('data-rellax-vertical-scroll-axis');
+      var dataHorizontalScrollAxis = el.getAttribute('data-rellax-horizontal-scroll-axis');
       var dataZindex = el.getAttribute( 'data-rellax-zindex' ) || 0;
       var dataMin = el.getAttribute( 'data-rellax-min' );
       var dataMax = el.getAttribute( 'data-rellax-max' );
+      var dataMinX = el.getAttribute('data-rellax-min-x');
+      var dataMaxX = el.getAttribute('data-rellax-max-x');
+      var dataMinY = el.getAttribute('data-rellax-min-y');
+      var dataMaxY = el.getAttribute('data-rellax-max-y');
 
       // initializing at scrollY = 0 (top of browser), scrollX = 0 (left of browser)
       // ensures elements are positioned based on HTML layout.
@@ -201,8 +213,14 @@
 
       // Optional individual block speed as data attr, otherwise global speed
       var speed = dataSpeed ? dataSpeed : self.options.speed;
+      var verticalSpeed = dataVerticalSpeed ? dataVerticalSpeed : self.options.verticalSpeed;
+      var horizontalSpeed = dataHorizontalSpeed ? dataHorizontalSpeed : self.options.horizontalSpeed;
 
-      var bases = updatePosition(percentageX, percentageY, speed);
+      // Optional individual block movement axis direction as data attr, otherwise gobal movement direction
+      var verticalScrollAxis = dataVericalScrollAxis ? dataVericalScrollAxis : self.options.verticalScrollAxis;
+      var horizontalScrollAxis = dataHorizontalScrollAxis ? dataHorizontalScrollAxis : self.options.horizontalScrollAxis;	  
+
+      var bases = updatePosition(percentageX, percentageY, speed, verticalSpeed, horizontalSpeed);
 
       // ~~Store non-translate3d transforms~~
       // Store inline styles and extract transforms
@@ -235,11 +253,19 @@
         height: blockHeight,
         width: blockWidth,
         speed: speed,
+        verticalSpeed: verticalSpeed,
+        horizontalSpeed: horizontalSpeed,
+        verticalScrollAxis: verticalScrollAxis,
+        horizontalScrollAxis: horizontalScrollAxis,
         style: style,
         transform: transform,
         zindex: dataZindex,
         min: dataMin,
-        max: dataMax
+        max: dataMax,
+        minX: dataMinX,
+        maxX: dataMaxX,
+        minY: dataMinY,
+        maxY: dataMaxY
       };
     };
 
@@ -276,10 +302,10 @@
     // Ahh a pure function, gets new transform value
     // based on scrollPosition and speed
     // Allow for decimal pixel values
-    var updatePosition = function(percentageX, percentageY, speed) {
+    var updatePosition = function(percentageX, percentageY, speed, verticalSpeed, horizontalSpeed) {
       var result = {};
-      var valueX = (speed * (100 * (1 - percentageX)));
-      var valueY = (speed * (100 * (1 - percentageY)));
+      var valueX = ((horizontalSpeed ? horizontalSpeed : speed) * (100 * (1 - percentageX)));
+      var valueY = ((verticalSpeed ? verticalSpeed : speed) * (100 * (1 - percentageY)));
 
       result.x = self.options.round ? Math.round(valueX) : Math.round(valueX * 100) / 100;
       result.y = self.options.round ? Math.round(valueY) : Math.round(valueY * 100) / 100;
@@ -320,11 +346,19 @@
     var animate = function() {
       var positions;
       for (var i = 0; i < self.elems.length; i++){
-        var percentageY = ((posY - blocks[i].top + screenY) / (blocks[i].height + screenY));
-        var percentageX = ((posX - blocks[i].left + screenX) / (blocks[i].width + screenX));
+        // Determine relevant movement directions
+        var verticalScrollAxis = blocks[i].verticalScrollAxis.toLowerCase();
+        var horizontalScrollAxis = blocks[i].horizontalScrollAxis.toLowerCase();
+        var verticalScrollX = verticalScrollAxis.indexOf("x") != -1 ? posY : 0;
+        var verticalScrollY = verticalScrollAxis.indexOf("y") != -1 ? posY : 0;
+        var horizontalScrollX = horizontalScrollAxis.indexOf("x") != -1 ? posX : 0;
+        var horizontalScrollY = horizontalScrollAxis.indexOf("y") != -1 ? posX : 0;
+
+        var percentageY = ((verticalScrollY + horizontalScrollY - blocks[i].top + screenY) / (blocks[i].height + screenY));
+        var percentageX = ((verticalScrollX + horizontalScrollX - blocks[i].left + screenX) / (blocks[i].width + screenX));
 
         // Subtracting initialize value, so element stays in same spot as HTML
-        positions = updatePosition(percentageX, percentageY, blocks[i].speed);// - blocks[i].baseX;
+        positions = updatePosition(percentageX, percentageY, blocks[i].speed, blocks[i].verticalSpeed, blocks[i].horizontalSpeed);
         var positionY = positions.y - blocks[i].baseY;
         var positionX = positions.x - blocks[i].baseX;
 
@@ -345,6 +379,14 @@
           }
         }
 
+        // Check if directional min limits are defined
+        if (blocks[i].minY != null) {
+            positionY = positionY <= blocks[i].minY ? blocks[i].minY : positionY;
+        }
+        if (blocks[i].minX != null) {
+            positionX = positionX <= blocks[i].minX ? blocks[i].minX : positionX;
+        }
+
         // Check if a max limit is defined
         if (blocks[i].max !== null) {
           if (self.options.vertical && !self.options.horizontal) {
@@ -353,6 +395,14 @@
           if (self.options.horizontal && !self.options.vertical) {
             positionX = positionX >= blocks[i].max ? blocks[i].max : positionX;
           }
+        }
+
+        // Check if directional max limits are defined
+        if (blocks[i].maxY != null) {
+            positionY = positionY >= blocks[i].maxY ? blocks[i].maxY : positionY;
+        }
+        if (blocks[i].maxX != null) {
+            positionX = positionX >= blocks[i].maxX ? blocks[i].maxX : positionX;
         }
 
         var zindex = blocks[i].zindex;
