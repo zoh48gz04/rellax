@@ -79,8 +79,9 @@
     // Default Settings
     self.options = {
       speed: -2,
-	  verticalSpeed: null,
-	  horizontalSpeed: null,
+	    verticalSpeed: null,
+	    horizontalSpeed: null,
+      breakpoints: [576, 768, 1201],
       center: false,
       wrapper: null,
       relativeToWrapper: false,
@@ -97,6 +98,29 @@
       Object.keys(options).forEach(function(key){
         self.options[key] = options[key];
       });
+    }
+
+    function validateCustomBreakpoints () {
+      if (self.options.breakpoints.length === 3 && Array.isArray(self.options.breakpoints)) {
+        var isAscending = true;
+        var isNumerical = true;
+        var lastVal;
+        self.options.breakpoints.forEach(function (i) {
+          if (typeof i !== 'number') isNumerical = false;
+          if (lastVal !== null) {
+            if (i < lastVal) isAscending = false;
+          }
+          lastVal = i;
+        });
+        if (isAscending && isNumerical) return;
+      }
+      // revert defaults if set incorrectly
+      self.options.breakpoints = [576, 768, 1201];
+      console.warn("Rellax: You must pass an array of 3 numbers in ascending order to the breakpoints option. Defaults reverted");
+    }
+
+    if (options.breakpoints) {
+      validateCustomBreakpoints();
     }
 
     // By default, rellax class
@@ -132,6 +156,17 @@
       }
     }
 
+    // set a placeholder for the current breakpoint
+    var currentBreakpoint;
+
+    // helper to determine current breakpoint
+    var getCurrentBreakpoint = function (w) {
+      var bp = self.options.breakpoints;
+      if (w < bp[0]) return 'xs';
+      if (w >= bp[0] && w < bp[1]) return 'sm';
+      if (w >= bp[1] && w < bp[2]) return 'md';
+      return 'lg';
+    };
 
     // Get and cache initial position of all elements
     var cacheBlocks = function() {
@@ -153,6 +188,8 @@
 
       screenY = window.innerHeight;
       screenX = window.innerWidth;
+      currentBreakpoint = getCurrentBreakpoint(screenX);
+
       setPosition();
 
       cacheBlocks();
@@ -174,6 +211,10 @@
     var createBlock = function(el) {
       var dataPercentage = el.getAttribute( 'data-rellax-percentage' );
       var dataSpeed = el.getAttribute( 'data-rellax-speed' );
+      var dataXsSpeed = el.getAttribute( 'data-rellax-xs-speed' );
+      var dataMobileSpeed = el.getAttribute( 'data-rellax-mobile-speed' );
+      var dataTabletSpeed = el.getAttribute( 'data-rellax-tablet-speed' );
+      var dataDesktopSpeed = el.getAttribute( 'data-rellax-desktop-speed' );
       var dataVerticalSpeed = el.getAttribute('data-rellax-vertical-speed');
       var dataHorizontalSpeed = el.getAttribute('data-rellax-horizontal-speed');
       var dataVericalScrollAxis = el.getAttribute('data-rellax-vertical-scroll-axis');
@@ -185,6 +226,19 @@
       var dataMaxX = el.getAttribute('data-rellax-max-x');
       var dataMinY = el.getAttribute('data-rellax-min-y');
       var dataMaxY = el.getAttribute('data-rellax-max-y');
+      var mapBreakpoints;
+      var breakpoints = true;
+
+      if (!dataXsSpeed && !dataMobileSpeed && !dataTabletSpeed && !dataDesktopSpeed) {
+        breakpoints = false;
+      } else {
+        mapBreakpoints = {
+          'xs': dataXsSpeed,
+          'sm': dataMobileSpeed,
+          'md': dataTabletSpeed,
+          'lg': dataDesktopSpeed
+        };
+      }
 
       // initializing at scrollY = 0 (top of browser), scrollX = 0 (left of browser)
       // ensures elements are positioned based on HTML layout.
@@ -212,13 +266,13 @@
       if(self.options.center){ percentageX = 0.5; percentageY = 0.5; }
 
       // Optional individual block speed as data attr, otherwise global speed
-      var speed = dataSpeed ? dataSpeed : self.options.speed;
+      var speed = (breakpoints && mapBreakpoints[currentBreakpoint] !== null) ? Number(mapBreakpoints[currentBreakpoint]) : (dataSpeed ? dataSpeed : self.options.speed);
       var verticalSpeed = dataVerticalSpeed ? dataVerticalSpeed : self.options.verticalSpeed;
       var horizontalSpeed = dataHorizontalSpeed ? dataHorizontalSpeed : self.options.horizontalSpeed;
 
       // Optional individual block movement axis direction as data attr, otherwise gobal movement direction
       var verticalScrollAxis = dataVericalScrollAxis ? dataVericalScrollAxis : self.options.verticalScrollAxis;
-      var horizontalScrollAxis = dataHorizontalScrollAxis ? dataHorizontalScrollAxis : self.options.horizontalScrollAxis;	  
+      var horizontalScrollAxis = dataHorizontalScrollAxis ? dataHorizontalScrollAxis : self.options.horizontalScrollAxis;
 
       var bases = updatePosition(percentageX, percentageY, speed, verticalSpeed, horizontalSpeed);
 
