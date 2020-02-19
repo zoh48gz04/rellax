@@ -81,7 +81,7 @@
       speed: -2,
 	    verticalSpeed: null,
 	    horizontalSpeed: null,
-      breakpoints: [576, 768, 1201],
+      breakpoints: [576, 768, 1024],
       center: false,
       wrapper: null,
       relativeToWrapper: false,
@@ -115,7 +115,7 @@
         if (isAscending && isNumerical) return;
       }
       // revert defaults if set incorrectly
-      self.options.breakpoints = [576, 768, 1201];
+      self.options.breakpoints = [576, 768, 1024];
       console.warn("Rellax: You must pass an array of 3 numbers in ascending order to the breakpoints option. Defaults reverted");
     }
 
@@ -210,6 +210,10 @@
     // el: is dom object, return: el cache values
     var createBlock = function(el) {
       var dataPercentage = el.getAttribute( 'data-rellax-percentage' );
+      var dataXsPercentage = el.getAttribute( 'data-rellax-xs-percentage' );
+      var dataMobilePercentage = el.getAttribute( 'data-rellax-mobile-percentage' );
+      var dataTabletPercentage = el.getAttribute( 'data-rellax-tablet-percentage' );
+      var dataDesktopPercentage = el.getAttribute( 'data-rellax-desktop-percentage' );
       var dataSpeed = el.getAttribute( 'data-rellax-speed' );
       var dataXsSpeed = el.getAttribute( 'data-rellax-xs-speed' );
       var dataMobileSpeed = el.getAttribute( 'data-rellax-mobile-speed' );
@@ -226,7 +230,9 @@
       var dataMaxX = el.getAttribute('data-rellax-max-x');
       var dataMinY = el.getAttribute('data-rellax-min-y');
       var dataMaxY = el.getAttribute('data-rellax-max-y');
+      var dataHorizontalInView = el.getAttribute('data-rellax-horizontal-in-view');
       var mapBreakpoints;
+      var mapBreakpointsPercentage;
       var breakpoints = true;
 
       if (!dataXsSpeed && !dataMobileSpeed && !dataTabletSpeed && !dataDesktopSpeed) {
@@ -238,6 +244,17 @@
           'md': dataTabletSpeed,
           'lg': dataDesktopSpeed
         };
+      }
+
+      if (dataXsPercentage || dataMobilePercentage || dataTabletPercentage || dataDesktopPercentage) {
+        mapBreakpointsPercentage = {
+          'xs': dataXsPercentage,
+          'sm': dataMobilePercentage,
+          'md': dataTabletPercentage,
+          'lg': dataDesktopPercentage
+        };
+
+        dataPercentage = mapBreakpointsPercentage[currentBreakpoint] != null ? mapBreakpointsPercentage[currentBreakpoint] : dataPercentage;
       }
 
       // initializing at scrollY = 0 (top of browser), scrollX = 0 (left of browser)
@@ -299,6 +316,22 @@
         }
       }
 
+      if(dataMinX == "$WIDTH") {
+        dataMinX = el.clientWidth;
+      }
+
+      if(dataMinX == "$CHILD_WIDTH") {
+        dataMinX = el.children[0].clientWidth;
+      }
+
+      if(dataMinX == "-$WIDTH") {
+        dataMinX = el.clientWidth * -1;
+      }
+
+      if(dataMinX == "-$CHILD_WIDTH") {
+        dataMinX = el.children[0].clientWidth * -1;
+      }
+
       return {
         baseX: bases.x,
         baseY: bases.y,
@@ -319,7 +352,8 @@
         minX: dataMinX,
         maxX: dataMaxX,
         minY: dataMinY,
-        maxY: dataMaxY
+        maxY: dataMaxY,
+        horizontalInView: dataHorizontalInView
       };
     };
 
@@ -410,6 +444,9 @@
 
         var percentageY = ((verticalScrollY + horizontalScrollY - blocks[i].top + screenY) / (blocks[i].height + screenY));
         var percentageX = ((verticalScrollX + horizontalScrollX - blocks[i].left + screenX) / (blocks[i].width + screenX));
+        if(blocks[i].horizontalInView) {
+          percentageX = ((verticalScrollX + horizontalScrollX - blocks[i].top + screenX) / (blocks[i].width + screenX));
+        }
 
         // Subtracting initialize value, so element stays in same spot as HTML
         positions = updatePosition(percentageX, percentageY, blocks[i].speed, blocks[i].verticalSpeed, blocks[i].horizontalSpeed);
